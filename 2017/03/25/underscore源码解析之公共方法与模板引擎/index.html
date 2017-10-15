@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="https://yuyanggong.github.io">
+  <title>Underscore源码分析之公共方法与模板引擎的实现 | 勉强|技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 公共方法与模板引擎的实现   _.identity1234// 直接返回传入的参数, 作为underscore的默认迭代器_.identity = function(value) &amp;#123;  return value;&amp;#125;;">
+<meta name="keywords" content="JavaScript,Underscore,源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Underscore源码分析之公共方法与模板引擎的实现">
+<meta property="og:url" content="https://yuyanggong.github.io/2017/03/25/underscore源码解析之公共方法与模板引擎/index.html">
+<meta property="og:site_name" content="勉强|技术博客">
+<meta property="og:description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 公共方法与模板引擎的实现   _.identity1234// 直接返回传入的参数, 作为underscore的默认迭代器_.identity = function(value) &amp;#123;  return value;&amp;#125;;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-03-25T13:25:29.452Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Underscore源码分析之公共方法与模板引擎的实现">
+<meta name="twitter:description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 公共方法与模板引擎的实现   _.identity1234// 直接返回传入的参数, 作为underscore的默认迭代器_.identity = function(value) &amp;#123;  return value;&amp;#125;;">
+  
+    <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="/img/set/own.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">勉强</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">勉强</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/set/own.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">勉强</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-underscore源码解析之公共方法与模板引擎" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Underscore源码分析之公共方法与模板引擎的实现
+    </h1>
+  
+
+        <a href="/2017/03/25/underscore源码解析之公共方法与模板引擎/" class="archive-article-date">
+  	<time datetime="2017-03-25T02:12:35.758Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-25</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>库名: underscore</li>
+<li>源码地址: <a href="https://github.com/jashkenas/underscore" target="_blank" rel="external">https://github.com/jashkenas/underscore</a></li>
+<li>源码版本: 1.8.3</li>
+<li>分析内容: 公共方法与模板引擎的实现</li>
+</ul>
+<hr>
+<h4 id="identity"><a href="#identity" class="headerlink" title="_.identity"></a>_.identity</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 直接返回传入的参数, 作为underscore的默认迭代器</span></div><div class="line">_.identity = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> value;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="constant"><a href="#constant" class="headerlink" title="_.constant"></a>_.constant</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 一个二段函数, 第一段调用的时候传入一个value, 利用词法作用域链保存在内存中,</span></div><div class="line"><span class="comment">// 在第二段函数(即内部函数)调用时返回这个value</span></div><div class="line">_.constant = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> value;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="noop"><a href="#noop" class="headerlink" title="_.noop"></a>_.noop</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 无论传入什么参数都返回undefined, 在内部做默认可选的迭代器函数</span></div><div class="line">_.noop = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div></pre></td></tr></table></figure>
+<h4 id="propertyOf"><a href="#propertyOf" class="headerlink" title="_.propertyOf"></a>_.propertyOf</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回对象特定的某个属性</span></div><div class="line">_.propertyOf = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 在obj为null、undefined时返回一个空对象, 避免边界情况报错</span></div><div class="line">  <span class="comment">// 如错误的读取了null上的属性</span></div><div class="line">  <span class="keyword">return</span> obj == <span class="literal">null</span> ? <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125; : <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> obj[key];</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="matcher"><a href="#matcher" class="headerlink" title="_.matcher"></a>_.matcher</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">// 检测是否函数上具有相应的键值对</span></div><div class="line">  _.matcher = _.matches = <span class="function"><span class="keyword">function</span>(<span class="params">attrs</span>) </span>&#123;</div><div class="line">    <span class="comment">// 拷贝attrs, 这里拷贝的原因是怕原attrs在后续被修改。</span></div><div class="line">    <span class="comment">// 因为传的是引用, 所以外部的修改也会影响到内部。</span></div><div class="line">    attrs = _.extendOwn(&#123;&#125;, attrs);</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> _.isMatch(obj, attrs);</div><div class="line">    &#125;;</div><div class="line">  &#125;; </div><div class="line"><span class="string">``</span><span class="string">` </span></div><div class="line"></div><div class="line">#### _.times</div><div class="line">`<span class="string">``</span>javascript</div><div class="line">  <span class="comment">// 执行一个函数n次, 并将这n次执行的返回值以一个数组的形式一起返回</span></div><div class="line">  _.times = <span class="function"><span class="keyword">function</span>(<span class="params">n, iteratee, context</span>) </span>&#123;</div><div class="line">    <span class="comment">// acuum数组, 用以保存函数执行的返回值</span></div><div class="line">    <span class="keyword">var</span> accum = <span class="built_in">Array</span>(<span class="built_in">Math</span>.max(<span class="number">0</span>, n));</div><div class="line">    iteratee = optimizeCb(iteratee, context, <span class="number">1</span>);</div><div class="line">    <span class="comment">// 一次执行, 并每次分别传入i参数</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; n; i++) accum[i] = iteratee(i);</div><div class="line">    <span class="keyword">return</span> accum;</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<h4 id="random"><a href="#random" class="headerlink" title="_.random"></a>_.random</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回一个介于min与max(包括max)之间的随机值。</span></div><div class="line">_.random = <span class="function"><span class="keyword">function</span>(<span class="params">min, max</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (max == <span class="literal">null</span>) &#123;</div><div class="line">    max = min;</div><div class="line">    min = <span class="number">0</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> min + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>));</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="now"><a href="#now" class="headerlink" title="_.now"></a>_.now</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取目前时间的时间戳</span></div><div class="line">_.now = <span class="built_in">Date</span>.now || <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="escape与-unescape"><a href="#escape与-unescape" class="headerlink" title=".escape与.unescape"></a><em>.escape与</em>.unescape</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 转义字符编码表</span></div><div class="line"><span class="keyword">var</span> escapeMap = &#123;</div><div class="line">  <span class="string">'&amp;'</span>: <span class="string">'&amp;amp;'</span>,</div><div class="line">  <span class="string">'&lt;'</span>: <span class="string">'&amp;lt;'</span>,</div><div class="line">  <span class="string">'&gt;'</span>: <span class="string">'&amp;gt;'</span>,</div><div class="line">  <span class="string">'"'</span>: <span class="string">'&amp;quot;'</span>,</div><div class="line">  <span class="string">"'"</span>: <span class="string">'&amp;#x27;'</span>,</div><div class="line">  <span class="string">'`'</span>: <span class="string">'&amp;#x60;'</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">// 转义字符解码表</span></div><div class="line"><span class="keyword">var</span> unescapeMap = _.invert(escapeMap);</div><div class="line"></div><div class="line"><span class="comment">// 解码/编码HTML转义字符的函数</span></div><div class="line"><span class="keyword">var</span> createEscaper = <span class="function"><span class="keyword">function</span>(<span class="params">map</span>) </span>&#123;</div><div class="line">  <span class="comment">// 返回编码/解码表中属性对应的值</span></div><div class="line">  <span class="keyword">var</span> escaper = <span class="function"><span class="keyword">function</span>(<span class="params">match</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> map[match];</div><div class="line">  &#125;;</div><div class="line">  <span class="comment">// 用于查询需要被替换字符的正则表达式</span></div><div class="line">  <span class="keyword">var</span> source = <span class="string">'(?:'</span> + _.keys(map).join(<span class="string">'|'</span>) + <span class="string">')'</span>;</div><div class="line">  <span class="comment">// 测试正则</span></div><div class="line">  <span class="keyword">var</span> testRegexp = <span class="built_in">RegExp</span>(source);</div><div class="line">  <span class="comment">// 替换正则</span></div><div class="line">  <span class="keyword">var</span> replaceRegexp = <span class="built_in">RegExp</span>(source, <span class="string">'g'</span>);</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">string</span>) </span>&#123;</div><div class="line">    string = string == <span class="literal">null</span> ? <span class="string">''</span> : <span class="string">''</span> + string;</div><div class="line">    <span class="keyword">return</span> testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div><div class="line">_.escape = createEscaper(escapeMap);</div><div class="line">_.unescape = createEscaper(unescapeMap);</div></pre></td></tr></table></figure>
+<h4 id="result"><a href="#result" class="headerlink" title="_.result"></a>_.result</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果object[prop]是一个函数, 则以object为上下文调用object[prop], </span></div><div class="line"><span class="comment">// 如果object[prop]不存在, 但是fallback存在且为函数,</span></div><div class="line"><span class="comment">// 则以object为上下文调用fallback,</span></div><div class="line"><span class="comment">// 以上都不是, 则返回object[prop], 不存在时返回fallback</span></div><div class="line">_.result = <span class="function"><span class="keyword">function</span>(<span class="params">object, prop, fallback</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> value = object == <span class="literal">null</span> ? <span class="keyword">void</span> <span class="number">0</span> : object[prop];</div><div class="line">  <span class="keyword">if</span> (value === <span class="keyword">void</span> <span class="number">0</span>) &#123;</div><div class="line">    value = fallback;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> _.isFunction(value) ? value.call(object) : value;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>####　_.uniqueId<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// // 生成一个独一无二的ID, 仅仅在浏览器session中有效。</span></div><div class="line"><span class="keyword">var</span> idCounter = <span class="number">0</span>;</div><div class="line">_.uniqueId = <span class="function"><span class="keyword">function</span>(<span class="params">prefix</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> id = ++idCounter + <span class="string">''</span>;</div><div class="line">  <span class="keyword">return</span> prefix ? prefix + id : id;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="模板引擎"><a href="#模板引擎" class="headerlink" title="模板引擎"></a>模板引擎</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 用来匹配相应模板的正则, 可以修改来自定义</span></div><div class="line"> _.templateSettings = &#123;</div><div class="line">   <span class="comment">// 匹配表达式</span></div><div class="line">   evaluate: <span class="regexp">/&lt;%([\s\S]+?)%&gt;/g</span>,</div><div class="line">   <span class="comment">// 匹配不需要转义的字符串</span></div><div class="line">   interpolate: <span class="regexp">/&lt;%=([\s\S]+?)%&gt;/g</span>,</div><div class="line">   <span class="comment">// 匹配需要转义的字符串</span></div><div class="line">   <span class="built_in">escape</span>: <span class="regexp">/&lt;%-([\s\S]+?)%&gt;/g</span></div><div class="line"> &#125;; </div><div class="line"> <span class="comment">// 一个永远无法匹配成功的正则, /$(.)/ 也可以达到类似的效果</span></div><div class="line"> <span class="comment">// 当在自定义`templateSettings`时</span></div><div class="line"> <span class="comment">// 不想定义interpolate或者escape可以这么用</span></div><div class="line"> <span class="keyword">var</span> noMatch = <span class="regexp">/(.)^/</span>;</div><div class="line"></div><div class="line"> <span class="comment">// 需要转义才能在字符串字面量中使用</span></div><div class="line"> <span class="keyword">var</span> escapes = &#123;</div><div class="line">   <span class="string">"'"</span>: <span class="string">"'"</span>,</div><div class="line">   <span class="string">'\\'</span>: <span class="string">'\\'</span>,</div><div class="line">   <span class="string">'\r'</span>: <span class="string">'r'</span>,</div><div class="line">   <span class="string">'\n'</span>: <span class="string">'n'</span>,</div><div class="line">   <span class="string">'\u2028'</span>: <span class="string">'u2028'</span>,</div><div class="line">   <span class="string">'\u2029'</span>: <span class="string">'u2029'</span></div><div class="line"> &#125;;</div><div class="line"></div><div class="line"> <span class="keyword">var</span> escapeRegExp = <span class="regexp">/\\|'|\r|\n|\u2028|\u2029/g</span>;</div><div class="line"></div><div class="line"> <span class="keyword">var</span> escapeChar = <span class="function"><span class="keyword">function</span>(<span class="params">match</span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span> <span class="string">'\\'</span> + escapes[match];</div><div class="line"> &#125;;</div><div class="line"></div><div class="line"> <span class="comment">// 模板核心代码</span></div><div class="line"> _.template = <span class="function"><span class="keyword">function</span>(<span class="params">text, settings, oldSettings</span>) </span>&#123;</div><div class="line">   <span class="comment">// 如果settings不存在而oldSettings存在, 则使用oldSettings</span></div><div class="line">   <span class="keyword">if</span> (!settings &amp;&amp; oldSettings) settings = oldSettings;</div><div class="line">   <span class="comment">// 创建一个空对象, 并通过defaults使其继承settings和_.templateSettings</span></div><div class="line">   <span class="comment">// 优先保留settings中的属性</span></div><div class="line">   settings = _.defaults(&#123;&#125;, settings, _.templateSettings);</div><div class="line"></div><div class="line">   <span class="comment">// 将模板边界判断转换为正则表达式</span></div><div class="line">   <span class="comment">// Ps: 这里也匹配了结束边界$, 以便匹配到末尾的字符串内容</span></div><div class="line">   <span class="keyword">var</span> matcher = <span class="built_in">RegExp</span>([</div><div class="line">     (settings.escape || noMatch).source,</div><div class="line">     (settings.interpolate || noMatch).source,</div><div class="line">     (settings.evaluate || noMatch).source</div><div class="line">   ].join(<span class="string">'|'</span>) + <span class="string">'|$'</span>, <span class="string">'g'</span>);</div><div class="line"></div><div class="line">   <span class="comment">// 编译模板, 转义字符串字面量</span></div><div class="line">   <span class="keyword">var</span> index = <span class="number">0</span>;</div><div class="line">   <span class="comment">// 在模板内部编译时候, 把编译后的字符串保存在内部的__p变量中</span></div><div class="line">   <span class="keyword">var</span> source = <span class="string">"__p+='"</span>;</div><div class="line">   <span class="comment">//  匹配模板内容</span></div><div class="line">   text.replace(matcher, <span class="function"><span class="keyword">function</span>(<span class="params">match, escape, interpolate, evaluate, offset</span>) </span>&#123;</div><div class="line">     <span class="comment">// index到offset之间, 即不包括在任何模板边界当中的内容属于普通字符串, </span></div><div class="line">     <span class="comment">// 只需要转义字符串处理便可添加</span></div><div class="line">     source += text.slice(index, offset).replace(escapeRegExp, escapeChar);</div><div class="line">     <span class="comment">// 手动调整index位置, 移动到match后面的位置</span></div><div class="line">     index = offset + match.length;</div><div class="line">  <span class="comment">// 如果匹配到编码模板边界</span></div><div class="line">     <span class="keyword">if</span> (<span class="built_in">escape</span>) &#123;</div><div class="line">     	<span class="comment">// 在模板内部, 将escape赋值给内部的变量__t, 然后判断其是否存在,</span></div><div class="line">     	<span class="comment">// 存在的话就用_.escape来解码后添加, 否则添加空字符串</span></div><div class="line">       source += <span class="string">"'+\n((__t=("</span> + <span class="built_in">escape</span> + <span class="string">"))==null?'':_.escape(__t))+\n'"</span>;</div><div class="line">     &#125; <span class="keyword">else</span> <span class="keyword">if</span> (interpolate) &#123;</div><div class="line">     	<span class="comment">// 同上, 只不过这里的interpolate不解码直接添加</span></div><div class="line">       source += <span class="string">"'+\n((__t=("</span> + interpolate + <span class="string">"))==null?'':__t)+\n'"</span>;</div><div class="line">     &#125; <span class="keyword">else</span> <span class="keyword">if</span> (evaluate) &#123;</div><div class="line">     	<span class="comment">// evaluate表达式放在内部的字符串之外</span></div><div class="line">       source += <span class="string">"';\n"</span> + evaluate + <span class="string">"\n__p+='"</span>;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> match;</div><div class="line">   &#125;);</div><div class="line">   source += <span class="string">"';\n"</span>;</div><div class="line"></div><div class="line">   <span class="comment">// 如果没有指明变量, 则绑定传入的obj(不存在时候绑定&#123;&#125;)在其作用域上</span></div><div class="line">   <span class="keyword">if</span> (!settings.variable) source = <span class="string">'with(obj||&#123;&#125;)&#123;\n'</span> + source + <span class="string">'&#125;\n'</span>;</div><div class="line"></div><div class="line"><span class="comment">// 进行内部的变量定义, 定义__t作为一个中间变量,供后续使用,</span></div><div class="line"><span class="comment">// __p则用来保存结果字符串, __j指向数组原型链上的join方法,</span></div><div class="line"><span class="comment">// 并在内部再创建一个print函数, 可连接参数, 供用户使用</span></div><div class="line">   source = <span class="string">"var __t,__p='',__j=Array.prototype.join,"</span> +</div><div class="line">     <span class="string">"print=function()&#123;__p+=__j.call(arguments,'');&#125;;\n"</span> +</div><div class="line">     source + <span class="string">'return __p;\n'</span>;</div><div class="line"></div><div class="line">   <span class="keyword">var</span> render;</div><div class="line">   <span class="keyword">try</span> &#123;</div><div class="line">     <span class="comment">// 以new Function来创建模板编译后执行的函数, 将setting.variable(不存在时候为obj)</span></div><div class="line">     <span class="comment">// 和'_'作为形参, source作为函数体</span></div><div class="line">     render = <span class="keyword">new</span> <span class="built_in">Function</span>(settings.variable || <span class="string">'obj'</span>, <span class="string">'_'</span>, source);</div><div class="line">   &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">     <span class="comment">// 如果创建时错误, 则抛出e, 并把source挂载在e上,</span></div><div class="line">     <span class="comment">// 可以在外部捕获错误并打印其source属性, 以进行错误分析</span></div><div class="line">     e.source = source;</div><div class="line">     <span class="keyword">throw</span> e;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="comment">// 包装模板函数, 内部绑定this到目前的上下文, 且传入date和_为实参</span></div><div class="line">   <span class="keyword">var</span> template = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">     <span class="keyword">return</span> render.call(<span class="keyword">this</span>, data, _);</div><div class="line">   &#125;;</div><div class="line"></div><div class="line">   <span class="comment">// 为了方便预编译提供的一个编译source</span></div><div class="line"></div><div class="line">   <span class="comment">// 这一步确定argument</span></div><div class="line">   <span class="keyword">var</span> argument = settings.variable || <span class="string">'obj'</span>;</div><div class="line">   <span class="comment">// 将一个包含函数的字符串挂载在模板函数的source属性上</span></div><div class="line">   template.source = <span class="string">'function('</span> + argument + <span class="string">')&#123;\n'</span> + source + <span class="string">'&#125;'</span>;</div><div class="line"></div><div class="line">   <span class="keyword">return</span> template;</div><div class="line"> &#125;;</div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Underscore/">Underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2017/03/25/underscore源码解析之公共方法与模板引擎/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/09/07/多git账号配置/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          git多账号配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/23/underscore源码解析之函数方法与对象方法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Underscore源码分析之函数与对象方法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="underscore源码解析之公共方法与模板引擎" data-title="Underscore源码分析之公共方法与模板引擎的实现" data-url="https://yuyanggong.github.io/2017/03/25/underscore源码解析之公共方法与模板引擎/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jseryuyang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 勉强
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Underscore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">源码分析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ssh</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">单元测试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">异步</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">大四学生&lt;br&gt;&lt;br&gt;web前端开发实习中~&lt;br&gt;</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

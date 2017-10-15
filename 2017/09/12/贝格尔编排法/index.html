@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="https://yuyanggong.github.io">
+  <title>贝格尔编排法 | 勉强|技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="贝格尔编排法从1985年起，世界性排球比赛多采用“贝格尔”编排法。其优点是单数队参加时可避免第二轮的轮空队从第四轮起每场都与前一轮的轮空队比赛的不合理现象。 编排步骤一、将参赛队伍按顺序分为俩部分，前一半和后一半各为一部分，若参赛队伍数量为单数则在后面补数字“0”凑成双数。 如：参赛队伍为1、2、3、4、5、6、7等七支队伍，则将其分成1、2、3、4和5、6、7、0俩部分。 二、分为俩部分后，前一">
+<meta name="keywords" content="JavaScript,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贝格尔编排法">
+<meta property="og:url" content="https://yuyanggong.github.io/2017/09/12/贝格尔编排法/index.html">
+<meta property="og:site_name" content="勉强|技术博客">
+<meta property="og:description" content="贝格尔编排法从1985年起，世界性排球比赛多采用“贝格尔”编排法。其优点是单数队参加时可避免第二轮的轮空队从第四轮起每场都与前一轮的轮空队比赛的不合理现象。 编排步骤一、将参赛队伍按顺序分为俩部分，前一半和后一半各为一部分，若参赛队伍数量为单数则在后面补数字“0”凑成双数。 如：参赛队伍为1、2、3、4、5、6、7等七支队伍，则将其分成1、2、3、4和5、6、7、0俩部分。 二、分为俩部分后，前一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/YuyangGong/bergerMethod/master/img/bergerFlow.png">
+<meta property="og:updated_time" content="2017-09-24T08:08:08.938Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="贝格尔编排法">
+<meta name="twitter:description" content="贝格尔编排法从1985年起，世界性排球比赛多采用“贝格尔”编排法。其优点是单数队参加时可避免第二轮的轮空队从第四轮起每场都与前一轮的轮空队比赛的不合理现象。 编排步骤一、将参赛队伍按顺序分为俩部分，前一半和后一半各为一部分，若参赛队伍数量为单数则在后面补数字“0”凑成双数。 如：参赛队伍为1、2、3、4、5、6、7等七支队伍，则将其分成1、2、3、4和5、6、7、0俩部分。 二、分为俩部分后，前一">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/YuyangGong/bergerMethod/master/img/bergerFlow.png">
+  
+    <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="/img/set/own.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">勉强</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">勉强</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/set/own.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">勉强</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-贝格尔编排法" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      贝格尔编排法
+    </h1>
+  
+
+        <a href="/2017/09/12/贝格尔编排法/" class="archive-article-date">
+  	<time datetime="2017-09-12T13:51:55.635Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-12</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>贝格尔编排法从1985年起，世界性排球比赛多采用“贝格尔”编排法。其优点是单数队参加时可避免第二轮的轮空队从第四轮起每场都与前一轮的轮空队比赛的不合理现象。</p>
+<h2 id="编排步骤"><a href="#编排步骤" class="headerlink" title="编排步骤"></a>编排步骤</h2><p>一、将参赛队伍按顺序分为俩部分，前一半和后一半各为一部分，若参赛队伍数量为单数则在后面补数字“0”凑成双数。</p>
+<p>如：参赛队伍为1、2、3、4、5、6、7等七支队伍，则将其分成1、2、3、4和5、6、7、0俩部分。</p>
+<p>二、分为俩部分后，前一部分由1号开始，自上而下写在左边；后一部分的数自下而上写在右边，然后用横线把相对的号数连接起来。这即是第一轮的比赛。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">l</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">5</td>
+</tr>
+</tbody>
+</table>
+<p>三、第二轮开始将第一轮右上角的编号(“0”或最大的一个代号数)移到左角上，第三轮又移回右角上，以此类推。即单数轮次时“0”或最大的一个代号在右上角，双数轮次时则在左上角。且每轮将除了“0”或最大一个代号以外的每个位置的数字，沿逆时针方向移动n（n等于(队伍数量-1)/2取整）个位置，当然移动时遇到“0”或最大的一个代号则跳过。<br><a id="more"></a><br>同样以队伍数量7为例子, 其第二轮的对阵表应：</p>
+<p>1) 将第一轮右上角的编号(“0”或最大的一个代号数)移到左角上</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">l</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1(原来) 0(现在)</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">null</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">5</td>
+</tr>
+</tbody>
+</table>
+<p>2) 将除了“0”或最大一个代号以外的每个位置的数字，沿逆时针方向移动3（(队伍数量-1)/2取整）个位置，当然移动时遇到“0”或最大的一个代号则跳过。<br>下表为第二轮比赛的对阵表。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">l</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+<p>3)重复步骤三，直至得出了最后一轮比赛的对阵表(如果比赛队伍数量为单数，则总共轮数为比赛队伍数量，否则，总共轮数为比赛队伍数量-1)</p>
+<p>比赛队伍数量为7时，循环赛对阵总表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">第一轮</th>
+<th style="text-align:center">第二轮</th>
+<th style="text-align:center">第三轮</th>
+<th style="text-align:center">第四轮</th>
+<th style="text-align:center">第五轮</th>
+<th style="text-align:center">第六轮</th>
+<th style="text-align:center">第七轮</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1－0</td>
+<td style="text-align:center">0－5</td>
+<td style="text-align:center">2－0</td>
+<td style="text-align:center">0－6</td>
+<td style="text-align:center">3－0</td>
+<td style="text-align:center">0－7</td>
+<td style="text-align:center">4－0</td>
+</tr>
+<tr>
+<td style="text-align:center">2－7</td>
+<td style="text-align:center">6－4</td>
+<td style="text-align:center">3－1</td>
+<td style="text-align:center">7－5</td>
+<td style="text-align:center">4－2</td>
+<td style="text-align:center">1－6</td>
+<td style="text-align:center">5－3</td>
+</tr>
+<tr>
+<td style="text-align:center">3－6</td>
+<td style="text-align:center">7－3</td>
+<td style="text-align:center">4－7</td>
+<td style="text-align:center">1－4</td>
+<td style="text-align:center">5－1</td>
+<td style="text-align:center">2－5</td>
+<td style="text-align:center">6－2</td>
+</tr>
+<tr>
+<td style="text-align:center">4－5</td>
+<td style="text-align:center">1－2</td>
+<td style="text-align:center">5－6</td>
+<td style="text-align:center">2－3</td>
+<td style="text-align:center">6－7</td>
+<td style="text-align:center">3－4</td>
+<td style="text-align:center">7－1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p><img src="https://raw.githubusercontent.com/YuyangGong/bergerMethod/master/img/bergerFlow.png" alt="流程图"></p>
+<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">begin</div><div class="line">input 比赛队伍数量num</div><div class="line">set resArr = [], arr = []</div><div class="line"></div><div class="line">// 初始化第一轮的队伍以及轮数等数据</div><div class="line">for: i = 1,2,...,num</div><div class="line">	resArr.push(i)</div><div class="line">set times = num - 1</div><div class="line">if num%2 == 1</div><div class="line">	resArr[num] = 0</div><div class="line">	times = times + 1</div><div class="line"></div><div class="line">// 依次输出各轮对阵队伍</div><div class="line">for: count = 1,2,...,times</div><div class="line">	output 轮数count</div><div class="line"></div><div class="line">	// 输出本轮对阵队伍</div><div class="line">	for: n = 0,1,...,times/2取整</div><div class="line">		output 对阵的俩支队伍resArr[n], resArr[times-n]</div><div class="line"></div><div class="line">	// 将第一轮右上角的编号(“0”或最大的一个代号数)移动	</div><div class="line">	if count%2 == 0</div><div class="line">		arr[0] = resArr[times]</div><div class="line">	else </div><div class="line">		arr[times] = resArr[0]</div><div class="line">	</div><div class="line">	// 求得各个位置的数字移动的步数</div><div class="line">	set step = (num-1)/2取整</div><div class="line"></div><div class="line">	// 逆时针移动每个位置数字(除&apos;0&apos;或者最大编号)的位置，并遇到&apos;0&apos;或最大编号跳过</div><div class="line">	for: n = 0,1,...,times	</div><div class="line">		arr[(n&gt;(times+1-count%2-step?n+3:n+4))%times] =lastArr[n]</div><div class="line">	</div><div class="line">	// 每轮对阵队伍的更新</div><div class="line">	lastArr = arr</div><div class="line">	arr = []</div><div class="line">end</div></pre></td></tr></table></figure>
+<h2 id="JavaScript代码"><a href="#JavaScript代码" class="headerlink" title="JavaScript代码"></a>JavaScript代码</h2><h3 id="ES5"><a href="#ES5" class="headerlink" title="ES5"></a>ES5</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  使用贝格尔排列法获取比赛对阵表</div><div class="line"> *  @param &#123;number&#125; num - 比赛队伍数量</div><div class="line"> *  @return &#123;array&#125; - 表示比赛对阵表的三维数组</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bergerMethod</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">	<span class="comment">// 格式不满足时抛出错误</span></div><div class="line">	<span class="keyword">if</span>(<span class="keyword">typeof</span> num !== <span class="string">'number'</span> || num &lt; <span class="number">2</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'输入非数字或小于2'</span>);</div><div class="line">	</div><div class="line">	<span class="comment">// 初始化结果数组和比赛轮数</span></div><div class="line">	<span class="keyword">var</span> resArr = [],</div><div class="line">		times = num - <span class="number">1</span>;</div><div class="line"></div><div class="line">	<span class="comment">// 初始化第一轮数组(先创建一定长度的数组，再添加速度上可以更快一些)</span></div><div class="line">	<span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(num);</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</div><div class="line">		arr[i] = i + <span class="number">1</span>;</div><div class="line">	&#125;</div><div class="line">	resArr[<span class="number">0</span>] = arr;</div><div class="line">	<span class="comment">// 如果队伍数量是单数则将0添加，凑成双数,并且将轮数增1</span></div><div class="line">	<span class="keyword">if</span>(num%<span class="number">2</span>) &#123;</div><div class="line">		arr[num] = <span class="number">0</span>;</div><div class="line">		times++;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 求得各个位置的数字需要逆时针移动的步数</span></div><div class="line">	<span class="keyword">var</span> step = (num<span class="number">-1</span>)/<span class="number">2</span>|<span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">var</span> round = <span class="number">2</span>;</div><div class="line">	<span class="keyword">do</span>&#123;</div><div class="line">		<span class="keyword">var</span> curArr = [],</div><div class="line">			lastArr = resArr[resArr.length - <span class="number">1</span>];</div><div class="line"></div><div class="line">		<span class="comment">// 将第一轮右上角的编号(“0”或最大的一个代号数)移动</span></div><div class="line">		<span class="keyword">if</span>(round%<span class="number">2</span>) &#123;</div><div class="line">			curArr[times] = lastArr[<span class="number">0</span>];</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			curArr[<span class="number">0</span>] = lastArr[times];</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">var</span> len = lastArr.length;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> idx = <span class="number">0</span>; idx &lt; len; idx++) &#123;</div><div class="line">			<span class="keyword">if</span>(lastArr[idx] === <span class="number">0</span> || lastArr[idx] === len) <span class="keyword">continue</span>;</div><div class="line">			<span class="comment">// 逆时针移动数字</span></div><div class="line">			curArr[(idx&gt;=len-round%<span class="number">2</span>-step ? idx+<span class="number">4</span> : idx+<span class="number">3</span>)%len] = lastArr[idx]</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		resArr.push(curArr);</div><div class="line"></div><div class="line">		round++;</div><div class="line">	&#125; <span class="keyword">while</span>(round &lt;= times)</div><div class="line"></div><div class="line">	<span class="comment">// 将数组中的循环数组映射为对赛数组</span></div><div class="line">	resArr = resArr.map(<span class="function"><span class="keyword">function</span>(<span class="params">v</span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> arr = [],</div><div class="line">		    len = v.length;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len/<span class="number">2</span>; i++) &#123;</div><div class="line">			arr.push([v[i], v[len-i<span class="number">-1</span>]]);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> arr;</div><div class="line">	&#125;);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> resArr;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><p>除了用let取代var、箭头函数、以及利用Array.from形成密集数组的小机灵外与ES5版本也没什么不同…<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  使用贝格尔排列法获取比赛对阵表</div><div class="line"> *  @param &#123;number&#125; num - 比赛队伍数量</div><div class="line"> *  @return &#123;array&#125; - 表示比赛对阵表的三维数组</div><div class="line"> */</div><div class="line"><span class="keyword">const</span> bergerMethod = <span class="function"><span class="params">num</span> =&gt;</span> &#123;</div><div class="line">	<span class="comment">// 格式不满足时抛出错误</span></div><div class="line">	<span class="keyword">if</span>(<span class="keyword">typeof</span> num !== <span class="string">'number'</span> || num &lt; <span class="number">2</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'输入非数字或小于2'</span>);</div><div class="line">	</div><div class="line">	<span class="comment">// 初始化结果数组和比赛轮数</span></div><div class="line">	<span class="keyword">let</span> resArr = [],</div><div class="line">		times = num - <span class="number">1</span>;</div><div class="line"></div><div class="line">	<span class="comment">// 初始化第一轮数组</span></div><div class="line">	<span class="keyword">let</span> arr = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: num&#125;).map(<span class="function">(<span class="params">v, i</span>) =&gt;</span> i + <span class="number">1</span>);</div><div class="line">	resArr[<span class="number">0</span>] = arr;</div><div class="line">	<span class="comment">// 如果队伍数量是单数则将0添加，凑成双数,并且将轮数增1</span></div><div class="line">	<span class="keyword">if</span>(num%<span class="number">2</span>) &#123;</div><div class="line">		arr[num] = <span class="number">0</span>;</div><div class="line">		times++;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 求得各个位置的数字需要逆时针移动的步数</span></div><div class="line">	<span class="keyword">let</span> step = (num<span class="number">-1</span>)/<span class="number">2</span>|<span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">let</span> round = <span class="number">2</span>;</div><div class="line">	<span class="keyword">do</span>&#123;</div><div class="line">		<span class="keyword">let</span> curArr = [],</div><div class="line">			lastArr = resArr[resArr.length - <span class="number">1</span>];</div><div class="line"></div><div class="line">		<span class="comment">// 将第一轮右上角的编号(“0”或最大的一个代号数)移动</span></div><div class="line">		<span class="keyword">if</span>(round%<span class="number">2</span>) &#123;</div><div class="line">			curArr[times] = lastArr[<span class="number">0</span>];</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			curArr[<span class="number">0</span>] = lastArr[times];</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">var</span> len = lastArr.length;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">let</span> idx = <span class="number">0</span>; idx &lt; len; idx++) &#123;</div><div class="line">			<span class="keyword">if</span>(lastArr[idx] === <span class="number">0</span> || lastArr[idx] === len) <span class="keyword">continue</span>;</div><div class="line">			<span class="comment">// 逆时针移动数字</span></div><div class="line">			curArr[(idx&gt;=len-round%<span class="number">2</span>-step ? idx+<span class="number">4</span> : idx+<span class="number">3</span>)%len] = lastArr[idx]</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		resArr.push(curArr);</div><div class="line"></div><div class="line">		round++;</div><div class="line">	&#125; <span class="keyword">while</span>(round &lt;= times)</div><div class="line"></div><div class="line">	<span class="comment">// 将数组中的循环数组映射为对赛数组</span></div><div class="line">	resArr = resArr.map(<span class="function"><span class="params">v</span> =&gt;</span> &#123;</div><div class="line">		<span class="keyword">var</span> arr = [],</div><div class="line">		    len = v.length;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len/<span class="number">2</span>; i++) &#123;</div><div class="line">			arr.push([v[i], v[len-i<span class="number">-1</span>]]);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> arr;</div><div class="line">	&#125;);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> resArr;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2017/09/12/贝格尔编排法/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/09/27/如何书写Vue组件的单元测试/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          如何书写Vue组件的单元测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/07/多git账号配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">git多账号配置</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="贝格尔编排法" data-title="贝格尔编排法" data-url="https://yuyanggong.github.io/2017/09/12/贝格尔编排法/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jseryuyang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 勉强
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Underscore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">源码分析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ssh</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">单元测试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">异步</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">大四学生&lt;br&gt;&lt;br&gt;web前端开发实习中~&lt;br&gt;</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

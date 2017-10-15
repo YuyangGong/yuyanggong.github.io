@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="https://yuyanggong.github.io">
+  <title>Underscore源码分析之函数与对象方法 | 勉强|技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 函数方法与对象方法实现   函数方法executeBound12345678910var executeBound = function(sourceFunc, boundFunc, context, callingContext, arg">
+<meta name="keywords" content="JavaScript,Underscore,源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Underscore源码分析之函数与对象方法">
+<meta property="og:url" content="https://yuyanggong.github.io/2017/03/23/underscore源码解析之函数方法与对象方法/index.html">
+<meta property="og:site_name" content="勉强|技术博客">
+<meta property="og:description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 函数方法与对象方法实现   函数方法executeBound12345678910var executeBound = function(sourceFunc, boundFunc, context, callingContext, arg">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-03-23T15:31:42.751Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Underscore源码分析之函数与对象方法">
+<meta name="twitter:description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 函数方法与对象方法实现   函数方法executeBound12345678910var executeBound = function(sourceFunc, boundFunc, context, callingContext, arg">
+  
+    <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="/img/set/own.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">勉强</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">勉强</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/set/own.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">勉强</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-underscore源码解析之函数方法与对象方法" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Underscore源码分析之函数与对象方法
+    </h1>
+  
+
+        <a href="/2017/03/23/underscore源码解析之函数方法与对象方法/" class="archive-article-date">
+  	<time datetime="2017-03-23T15:28:08.180Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-23</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>库名: underscore</li>
+<li>源码地址: <a href="https://github.com/jashkenas/underscore" target="_blank" rel="external">https://github.com/jashkenas/underscore</a></li>
+<li>源码版本: 1.8.3</li>
+<li>分析内容: 函数方法与对象方法实现</li>
+</ul>
+<hr>
+<h3 id="函数方法"><a href="#函数方法" class="headerlink" title="函数方法"></a>函数方法</h3><h4 id="executeBound"><a href="#executeBound" class="headerlink" title="executeBound"></a>executeBound</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> executeBound = <span class="function"><span class="keyword">function</span>(<span class="params">sourceFunc, boundFunc, context, callingContext, args</span>) </span>&#123;</div><div class="line">  <span class="comment">// 这一步判断是不是用 new 实例化构造函数</span></div><div class="line">  <span class="comment">// 如果不是, 直接用apply绑定this执行后返回</span></div><div class="line">  <span class="keyword">if</span> (!(callingContext <span class="keyword">instanceof</span> boundFunc)) <span class="keyword">return</span> sourceFunc.apply(context, args);</div><div class="line">  <span class="comment">// 如果是new实例化构造函数的话, 则模拟new函数内部实现</span></div><div class="line">  <span class="keyword">var</span> self = baseCreate(sourceFunc.prototype);</div><div class="line">  <span class="keyword">var</span> result = sourceFunc.apply(self, args);</div><div class="line">  <span class="keyword">if</span> (_.isObject(result)) <span class="keyword">return</span> result;</div><div class="line">  <span class="keyword">return</span> self;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="bind"><a href="#bind" class="headerlink" title="_.bind"></a>_.bind</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 模拟原生Array.prototype.bind</span></div><div class="line">_.bind = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">func, context, args</span>) </span>&#123;</div><div class="line">  <span class="comment">// 只能处理函数, 不是函数直接扔出错误</span></div><div class="line">  <span class="keyword">if</span> (!_.isFunction(func)) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Bind must be called on a function'</span>);</div><div class="line">  <span class="keyword">var</span> bound = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">callArgs</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> executeBound(func, bound, context, <span class="keyword">this</span>, args.concat(callArgs));</div><div class="line">  &#125;);</div><div class="line">  <span class="keyword">return</span> bound;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="partial"><a href="#partial" class="headerlink" title="_.partial"></a>_.partial</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">// 局部应用一个函数填充在任意个数的 arguments，</span></div><div class="line">  <span class="comment">// 不改变其动态this值。和bind方法很相近。你可以传递_(用户可以自定义)给arguments列表</span></div><div class="line">  <span class="comment">// 来指定一个不预先填充，但在调用时提供的参数。</span></div><div class="line">  _.partial = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">func, boundArgs</span>) </span>&#123;</div><div class="line">    <span class="comment">// 获取参数占位符</span></div><div class="line">    <span class="keyword">var</span> placeholder = _.partial.placeholder;</div><div class="line">    <span class="keyword">var</span> bound = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> position = <span class="number">0</span>, length = boundArgs.length;</div><div class="line">      <span class="keyword">var</span> args = <span class="built_in">Array</span>(length);</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">        <span class="comment">// 进行占位符的替换</span></div><div class="line">        args[i] = boundArgs[i] === placeholder ? <span class="built_in">arguments</span>[position++] : boundArgs[i];</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">while</span> (position &lt; <span class="built_in">arguments</span>.length) args.push(<span class="built_in">arguments</span>[position++]);</div><div class="line">      <span class="keyword">return</span> executeBound(func, bound, <span class="keyword">this</span>, <span class="keyword">this</span>, args);</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">return</span> bound;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line"><span class="comment">// 可以通过修改_.partial.placeholder来自定义占位符</span></div><div class="line">  _.partial.placeholder = _;</div></pre></td></tr></table></figure>
+<h4 id="bindAll"><a href="#bindAll" class="headerlink" title="_.bindAll"></a>_.bindAll</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 将obj上的方法的this绑定在obj上</span></div><div class="line">_.bindAll = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">obj, keys</span>) </span>&#123;</div><div class="line">  keys = flatten(keys, <span class="literal">false</span>, <span class="literal">false</span>);</div><div class="line">  <span class="keyword">var</span> index = keys.length;</div><div class="line">  <span class="keyword">if</span> (index &lt; <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'bindAll must be passed function names'</span>);</div><div class="line">  <span class="keyword">while</span> (index--) &#123;</div><div class="line">    <span class="keyword">var</span> key = keys[index];</div><div class="line">    obj[key] = _.bind(obj[key], obj);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="memoize"><a href="#memoize" class="headerlink" title="_.memoize"></a>_.memoize</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 通过 缓存函数结果 来优化函数</span></div><div class="line">_.memoize = <span class="function"><span class="keyword">function</span>(<span class="params">func, hasher</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> memoize = <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</div><div class="line">    <span class="comment">// 缓存放在memoize对象上</span></div><div class="line">    <span class="keyword">var</span> cache = memoize.cache;</div><div class="line">    <span class="comment">// hasher用来处理传的参数保存在cache中的键名</span></div><div class="line">    <span class="keyword">var</span> address = <span class="string">''</span> + (hasher ? hasher.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>) : key);</div><div class="line">    <span class="keyword">if</span> (!_.has(cache, address)) cache[address] = func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    <span class="keyword">return</span> cache[address];</div><div class="line">  &#125;;</div><div class="line">  memoize.cache = &#123;&#125;;</div><div class="line">  <span class="keyword">return</span> memoize;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="delay"><a href="#delay" class="headerlink" title="_.delay"></a>_.delay</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 延迟执行函数</span></div><div class="line">_.delay = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">func, wait, args</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> func.apply(<span class="literal">null</span>, args);</div><div class="line">  &#125;, wait);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="defer"><a href="#defer" class="headerlink" title="_.defer"></a>_.defer</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 另一个函数异步执行, 在函数调用栈空了以后再执行</span></div><div class="line"><span class="comment">// 比较好奇为什么这里是1不是直接设置为0</span></div><div class="line">_.defer = _.partial(_.delay, _, <span class="number">1</span>);</div></pre></td></tr></table></figure>
+<h4 id="throttle"><a href="#throttle" class="headerlink" title="_.throttle"></a>_.throttle</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建并返回一个像节流阀一样的函数，当重复调用函数的时候，至少每隔 wait毫秒调用一次该函数。</span></div><div class="line">_.throttle = <span class="function"><span class="keyword">function</span>(<span class="params">func, wait, options</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> timeout, context, args, result;</div><div class="line">  <span class="comment">// 保留上一次调用时的时间戳</span></div><div class="line">  <span class="keyword">var</span> previous = <span class="number">0</span>;</div><div class="line">  <span class="keyword">if</span> (!options) options = &#123;&#125;;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> later = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 如果设置options.leading为false的话, 那么第一次调用不会执行</span></div><div class="line">    <span class="comment">// 需要过wait秒后的调用才执行</span></div><div class="line">    previous = options.leading === <span class="literal">false</span> ? <span class="number">0</span> : _.now();</div><div class="line">    <span class="comment">// 打断timeout对此later的引用, 释放内存</span></div><div class="line">    timeout = <span class="literal">null</span>;</div><div class="line">    <span class="comment">// 执行函数</span></div><div class="line">    result = func.apply(context, args);</div><div class="line">    <span class="comment">// 如果目前没有timeout, 即没有延迟执行的函数, 则打断context和args的引用</span></div><div class="line">    <span class="keyword">if</span> (!timeout) context = args = <span class="literal">null</span>;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> throttled = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 获取目前的时间</span></div><div class="line">    <span class="keyword">var</span> now = _.now();</div><div class="line">    <span class="comment">// 如果是第一次调用或者其options.leading为false, 则让前一次的时间为本次时间</span></div><div class="line">    <span class="keyword">if</span> (!previous &amp;&amp; options.leading === <span class="literal">false</span>) previous = now;</div><div class="line">    <span class="comment">// 计算剩余时间, 如果是第一次或者options.leading为false时, 这里应为wait</span></div><div class="line">    <span class="keyword">var</span> remaining = wait - (now - previous);</div><div class="line">    <span class="comment">// 报错上下文和参数的引用</span></div><div class="line">    context = <span class="keyword">this</span>;</div><div class="line">    args = <span class="built_in">arguments</span>;</div><div class="line">    <span class="comment">// 如果剩余时间小于0, </span></div><div class="line">    <span class="comment">// 或者大于等待时间</span></div><div class="line">    <span class="comment">// (判断大于等待时间是为了在用户代理的本地时间被修改时就立即执行函数)</span></div><div class="line">    <span class="keyword">if</span> (remaining &lt;= <span class="number">0</span> || remaining &gt; wait) &#123;</div><div class="line">      <span class="comment">// 如果已经有timeout存在, 则清空已存在的timeout</span></div><div class="line">      <span class="keyword">if</span> (timeout) &#123;</div><div class="line">        clearTimeout(timeout);</div><div class="line">        timeout = <span class="literal">null</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// 改变上一次的执行时间previous</span></div><div class="line">      previous = now;</div><div class="line">      <span class="comment">// 执行函数并保存返回值</span></div><div class="line">      result = func.apply(context, args);</div><div class="line">      <span class="comment">// 如果timeout不存在则打断引用</span></div><div class="line">      <span class="keyword">if</span> (!timeout) context = args = <span class="literal">null</span>;</div><div class="line">    <span class="comment">// 如果timeout不存在, 且options.trailing不为false, </span></div><div class="line">    <span class="comment">// 则设置remaining剩余时间以后执行函数</span></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!timeout &amp;&amp; options.trailing !== <span class="literal">false</span>) &#123;</div><div class="line">      timeout = setTimeout(later, remaining);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;;</div><div class="line">  <span class="comment">// 挂载在throttled上的取消方法, </span></div><div class="line">  <span class="comment">// 用来重置throttled的状态, 打断timeout、context、args的引用</span></div><div class="line">  throttled.cancel = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    clearTimeout(timeout);</div><div class="line">    previous = <span class="number">0</span>;</div><div class="line">    timeout = context = args = <span class="literal">null</span>;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// 返回thrttled方法, 每次创建都是一个新的throttled，利用闭包</span></div><div class="line">  <span class="comment">// 产生了与new实例化类似的效果</span></div><div class="line">  <span class="keyword">return</span> throttled;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="debounce"><a href="#debounce" class="headerlink" title="_.debounce"></a>_.debounce</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回func函数的防反跳版本, 将延迟函数的执行(真正的执行)</span></div><div class="line"><span class="comment">// 在函数最后一次调用时刻的 wait 毫秒之后, 如果传入immediate一个真值</span></div><div class="line"><span class="comment">// 则第一次会直接调用(真正的调用)</span></div><div class="line">_.debounce = <span class="function"><span class="keyword">function</span>(<span class="params">func, wait, immediate</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> timeout, result;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> later = <span class="function"><span class="keyword">function</span>(<span class="params">context, args</span>) </span>&#123;</div><div class="line">    <span class="comment">// 打断timeout对此函数的引用</span></div><div class="line">    timeout = <span class="literal">null</span>;</div><div class="line">    <span class="comment">// 如果args参数存在, 则以context为上下文传入args参数调用</span></div><div class="line">    <span class="keyword">if</span> (args) result = func.apply(context, args);</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> debounced = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">args</span>) </span>&#123;</div><div class="line">    <span class="comment">// 如果有timeout存在, 则清除</span></div><div class="line">    <span class="keyword">if</span> (timeout) clearTimeout(timeout);</div><div class="line">    <span class="comment">// 如果immediate为真, 且是第一次调用则执行函数, 类似节流throttled</span></div><div class="line">    <span class="keyword">if</span> (immediate) &#123;</div><div class="line">      <span class="keyword">var</span> callNow = !timeout;</div><div class="line">      <span class="comment">// 不传参, 在later中不会执行</span></div><div class="line">      timeout = setTimeout(later, wait);</div><div class="line">      <span class="keyword">if</span> (callNow) result = func.apply(<span class="keyword">this</span>, args);</div><div class="line">    <span class="comment">// 如果不为真, 则照常延迟执行</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      timeout = _.delay(later, wait, <span class="keyword">this</span>, args);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="comment">// 挂载在debounced上的取消方法, </span></div><div class="line">  <span class="comment">// 用来重置debounced的状态, 打断timeout的引用</span></div><div class="line">  debounced.cancel = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    clearTimeout(timeout);</div><div class="line">    timeout = <span class="literal">null</span>;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// 返回debounced</span></div><div class="line">  <span class="keyword">return</span> debounced;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="wrap"><a href="#wrap" class="headerlink" title="_.wrap"></a>_.wrap</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 将第一个函数 func 封装到函数 wrapper 里面, 并把函数 func</span></div><div class="line"><span class="comment">// 作为第一个参数传给 wrapper</span></div><div class="line">_.wrap = <span class="function"><span class="keyword">function</span>(<span class="params">func, wrapper</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> _.partial(wrapper, func);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="negate"><a href="#negate" class="headerlink" title="_.negate"></a>_.negate</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回predicate的逆版本</span></div><div class="line">_.negate = <span class="function"><span class="keyword">function</span>(<span class="params">predicate</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> !predicate.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="compose"><a href="#compose" class="headerlink" title="_.compose"></a>_.compose</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回一个组合函数, 会依次从右到左调用函数</span></div><div class="line">_.compose = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> args = <span class="built_in">arguments</span>;</div><div class="line">  <span class="keyword">var</span> start = args.length - <span class="number">1</span>;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> i = start;</div><div class="line">    <span class="keyword">var</span> result = args[start].apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    <span class="keyword">while</span> (i--) result = args[i].call(<span class="keyword">this</span>, result);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="after"><a href="#after" class="headerlink" title="_.after"></a>_.after</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回一个函数, 其只有在times次调用以后才能被执行</span></div><div class="line">_.after = <span class="function"><span class="keyword">function</span>(<span class="params">times, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 简单的利用闭包机制保存times, 用times监控调用情况</span></div><div class="line">    <span class="keyword">if</span> (--times &lt; <span class="number">1</span>) &#123;</div><div class="line">      <span class="keyword">return</span> func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="before"><a href="#before" class="headerlink" title="_.before"></a>_.before</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回一个函数, 其只有前times-1次调用会被执行</span></div><div class="line">_.before = <span class="function"><span class="keyword">function</span>(<span class="params">times, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> memo;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (--times &gt; <span class="number">0</span>) &#123;</div><div class="line">      memo = func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// times-1次后, 打断引用, 清理内存</span></div><div class="line">    <span class="keyword">if</span> (times &lt;= <span class="number">1</span>) func = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">return</span> memo;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="once"><a href="#once" class="headerlink" title="_.once"></a>_.once</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回一个函数只能在第一次调用时候被执行</span></div><div class="line">_.once = _.partial(_.before, <span class="number">2</span>);</div></pre></td></tr></table></figure>
+<h3 id="对象方法"><a href="#对象方法" class="headerlink" title="对象方法"></a>对象方法</h3><h4 id="keys"><a href="#keys" class="headerlink" title="_.keys"></a>_.keys</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取对象的键名, 并以数组的形式返回</span></div><div class="line"><span class="comment">// 类似es5中原生的`Object.keys`.</span></div><div class="line">_.keys = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果不是对象, 则直接返回空数组</span></div><div class="line">  <span class="keyword">if</span> (!_.isObject(obj)) <span class="keyword">return</span> [];</div><div class="line">  <span class="comment">// 如果原生方法存在则直接使用原生方法</span></div><div class="line">  <span class="keyword">if</span> (nativeKeys) <span class="keyword">return</span> nativeKeys(obj);</div><div class="line">  <span class="keyword">var</span> keys = [];</div><div class="line">  <span class="comment">// 遍历obj上的可枚举属性, 用_.has判断是否是其自身的属性(非原型链上)</span></div><div class="line">  <span class="comment">// 如果是的话, 就push进结果数组中</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) <span class="keyword">if</span> (_.has(obj, key)) keys.push(key);</div><div class="line">  <span class="comment">// IE9以下有bug, 需要针对处理</span></div><div class="line">  <span class="comment">// (主要是部分原型链上的同名方法如toString等经hasOwnProperty会错误的返回false</span></div><div class="line">  <span class="comment">// 以及for in无法枚举constructor，哪怕自身上已经重写, 且设置为可枚举</span></div><div class="line">  <span class="keyword">if</span> (hasEnumBug) collectNonEnumProps(obj, keys);</div><div class="line">  <span class="keyword">return</span> keys;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="解决-keys中存在于IE9的bug"><a href="#解决-keys中存在于IE9的bug" class="headerlink" title="解决_.keys中存在于IE9的bug"></a>解决_.keys中存在于IE9的bug</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断是否有枚举bug</span></div><div class="line"><span class="keyword">var</span> hasEnumBug = !&#123;<span class="attr">toString</span>: <span class="literal">null</span>&#125;.propertyIsEnumerable(<span class="string">'toString'</span>);</div><div class="line"><span class="comment">// 这些属性在有枚举bug时, 哪怕在自身对象上重写, 也不会被枚举</span></div><div class="line"><span class="keyword">var</span> nonEnumerableProps = [<span class="string">'valueOf'</span>, <span class="string">'isPrototypeOf'</span>, <span class="string">'toString'</span>,</div><div class="line">                    <span class="string">'propertyIsEnumerable'</span>, <span class="string">'hasOwnProperty'</span>, <span class="string">'toLocaleString'</span>];</div><div class="line"></div><div class="line"><span class="keyword">var</span> collectNonEnumProps = <span class="function"><span class="keyword">function</span>(<span class="params">obj, keys</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> nonEnumIdx = nonEnumerableProps.length;</div><div class="line">  <span class="keyword">var</span> <span class="keyword">constructor</span> = obj.<span class="keyword">constructor</span>;</div><div class="line">  // 有原型就使用原型, 如果没有则使用Object.prototype</div><div class="line">  var proto = _.isFunction(<span class="keyword">constructor</span>) &amp;&amp; <span class="keyword">constructor</span>.prototype || ObjProto;</div><div class="line"></div><div class="line">  // Constructor不会被for in枚举, 但是可以通过hasOwnProperty判断</div><div class="line">  var prop = '<span class="keyword">constructor</span>';</div><div class="line">  if (_.has(obj, prop) &amp;&amp; !_.contains(keys, prop)) keys.push(prop);</div><div class="line"></div><div class="line">  while (nonEnumIdx--) &#123;</div><div class="line">    prop = nonEnumerableProps[nonEnumIdx];</div><div class="line">    <span class="comment">// 判断1、是否是是obj上的可枚举对象, 2、是否不在原型链上, 3、结果中是否已经包含</span></div><div class="line">    <span class="keyword">if</span> (prop <span class="keyword">in</span> obj &amp;&amp; obj[prop] !== proto[prop] &amp;&amp; !_.contains(keys, prop)) &#123;</div><div class="line">      keys.push(prop);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="allKeys"><a href="#allKeys" class="headerlink" title="_.allKeys"></a>_.allKeys</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回对象上的所有可枚举键名, 包括自身上的以及原型链上的</span></div><div class="line">_.allKeys = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!_.isObject(obj)) <span class="keyword">return</span> [];</div><div class="line">  <span class="keyword">var</span> keys = [];</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) keys.push(key);</div><div class="line">  <span class="comment">// IE9以下特殊处理</span></div><div class="line">  <span class="keyword">if</span> (hasEnumBug) collectNonEnumProps(obj, keys);</div><div class="line">  <span class="keyword">return</span> keys;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="values"><a href="#values" class="headerlink" title="_.values"></a>_.values</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回对象自身上的所有可枚举属性的值</span></div><div class="line">_.values = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 先获取其自身上所有可枚举属性的键名</span></div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj);</div><div class="line">  <span class="keyword">var</span> length = keys.length;</div><div class="line">  <span class="keyword">var</span> values = <span class="built_in">Array</span>(length);</div><div class="line">  <span class="comment">// 根据先前获取的键名去拿属性值</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">    values[i] = obj[keys[i]];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> values;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="mapObject"><a href="#mapObject" class="headerlink" title="_.mapObject"></a>_.mapObject</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 与map相似，但用于对象。转换每个属性的值。</span></div><div class="line">_.mapObject = <span class="function"><span class="keyword">function</span>(<span class="params">obj, iteratee, context</span>) </span>&#123;</div><div class="line">  iteratee = cb(iteratee, context);</div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj),</div><div class="line">      length = keys.length,</div><div class="line">      results = &#123;&#125;;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>; index &lt; length; index++) &#123;</div><div class="line">    <span class="keyword">var</span> currentKey = keys[index];</div><div class="line">    results[currentKey] = iteratee(obj[currentKey], currentKey, obj);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> results;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="pairs"><a href="#pairs" class="headerlink" title="_.pairs"></a>_.pairs</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 将对象转换为键值对形式的二维数组</span></div><div class="line">_.pairs = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj);</div><div class="line">  <span class="keyword">var</span> length = keys.length;</div><div class="line">  <span class="keyword">var</span> pairs = <span class="built_in">Array</span>(length);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">    pairs[i] = [keys[i], obj[keys[i]]];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> pairs;  </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="invert"><a href="#invert" class="headerlink" title="_.invert"></a>_.invert</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 反转对象的键值对</span></div><div class="line">_.invert = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> result = &#123;&#125;;</div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</div><div class="line">    result[obj[keys[i]]] = keys[i];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="functions"><a href="#functions" class="headerlink" title="_.functions"></a>_.functions</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回对象上(包括原型链)可枚举的函数名, 并且对其排序</span></div><div class="line">_.functions = _.methods = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> names = [];</div><div class="line">  <span class="comment">// 遍历如果是函数, 则将键名push进names</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</div><div class="line">    <span class="keyword">if</span> (_.isFunction(obj[key])) names.push(key);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 排序并返回</span></div><div class="line">  <span class="keyword">return</span> names.sort();</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="extend与-extendOwn以及-defaults"><a href="#extend与-extendOwn以及-defaults" class="headerlink" title=".extend与.extendOwn以及_.defaults"></a><em>.extend与</em>.extendOwn以及_.defaults</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 内部私有函数, 为了创建extend等方法。</span></div><div class="line"><span class="comment">// 传入的keysFunc是一个用来获取当前对象的键值的函数,</span></div><div class="line"><span class="comment">// defaults判断是否要覆盖目标对象上已存在的属性 </span></div><div class="line"><span class="keyword">var</span> createAssigner = <span class="function"><span class="keyword">function</span>(<span class="params">keysFunc, defaults</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> length = <span class="built_in">arguments</span>.length;</div><div class="line">    <span class="comment">// 如果defaults为真, 则先将obj转换为对象</span></div><div class="line">    <span class="keyword">if</span> (defaults) obj = <span class="built_in">Object</span>(obj);</div><div class="line">    <span class="comment">// 如果参数长度小于2, 或obj为null、undefined则直接返回obj。</span></div><div class="line">    <span class="keyword">if</span> (length &lt; <span class="number">2</span> || obj == <span class="literal">null</span>) <span class="keyword">return</span> obj;</div><div class="line">    <span class="comment">// 遍历参数, 依次去拓展源对象</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">1</span>; index &lt; length; index++) &#123;</div><div class="line">      <span class="keyword">var</span> source = <span class="built_in">arguments</span>[index],</div><div class="line">          keys = keysFunc(source),</div><div class="line">          l = keys.length;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; l; i++) &#123;</div><div class="line">        <span class="keyword">var</span> key = keys[i];</div><div class="line">        <span class="comment">// 如果defaults为假, 则无视obj上已存在的同名属性, 直接覆盖</span></div><div class="line">        <span class="comment">// 反之, 如果defaults为真, 且obj上已存在同名属性, 则跳过, 不覆盖</span></div><div class="line">        <span class="keyword">if</span> (!defaults || obj[key] === <span class="keyword">void</span> <span class="number">0</span>) obj[key] = source[key];</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> obj;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 复制source对象中的所有属性覆盖到destination对象上，并且返回 destination 对象. </span></div><div class="line"><span class="comment">// 复制是按顺序的, 所以后面的对象属性会把前面的对象属性覆盖掉(如果有重复).</span></div><div class="line"><span class="comment">// 拓展也包括原型链上的属性.</span></div><div class="line">_.extend = createAssigner(_.allKeys);</div><div class="line"></div><div class="line"><span class="comment">// 与extend类似, 但是不包括原型链上的属性</span></div><div class="line">_.extendOwn = _.assign = createAssigner(_.keys); </div><div class="line"></div><div class="line"><span class="comment">// 与_.extend类似, 但是会保留destination对象上已存在的属性</span></div><div class="line">_.defaults = createAssigner(_.allKeys, <span class="literal">true</span>);</div></pre></td></tr></table></figure>
+<h4 id="findKey"><a href="#findKey" class="headerlink" title="_.findKey"></a>_.findKey</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回对象中第一个通过predicate的属性的键名</span></div><div class="line">_.findKey = <span class="function"><span class="keyword">function</span>(<span class="params">obj, predicate, context</span>) </span>&#123;</div><div class="line">  predicate = cb(predicate, context);</div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj), key;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</div><div class="line">    key = keys[i];</div><div class="line">    <span class="keyword">if</span> (predicate(obj[key], key, obj)) <span class="keyword">return</span> key;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 如果遍历完都没有查询到有符合predicate的属性, 则无返回值</span></div><div class="line">  <span class="comment">// 等同于返回了undefined</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="pick"><a href="#pick" class="headerlink" title="_.pick"></a>_.pick</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 内部辅助函数, 用来检测obj对象及其原型链上是否有key属性</span></div><div class="line"><span class="keyword">var</span> keyInObj = <span class="function"><span class="keyword">function</span>(<span class="params">value, key, obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> key <span class="keyword">in</span> obj;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 返回一个obj副本，只过滤出keys(有效的键组成的数组)参数指定的属性值。</span></div><div class="line"><span class="comment">// 或者接受一个判断函数，指定挑选哪个key。</span></div><div class="line">_.pick = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">obj, keys</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> result = &#123;&#125;, iteratee = keys[<span class="number">0</span>];</div><div class="line">  <span class="keyword">if</span> (obj == <span class="literal">null</span>) <span class="keyword">return</span> result;</div><div class="line">  <span class="comment">// 如果iteratee为函数, 则代表第二个传进来的参数是处理函数, 而不是key键</span></div><div class="line">  <span class="keyword">if</span> (_.isFunction(iteratee)) &#123;</div><div class="line">    <span class="comment">// 如果keys的长度大于1, 则将其第二索引位的元素当成context传入优化函数中</span></div><div class="line">    <span class="keyword">if</span> (keys.length &gt; <span class="number">1</span>) iteratee = optimizeCb(iteratee, keys[<span class="number">1</span>]);</div><div class="line">    <span class="comment">// 获取obj对象上的所有键名, 包括所有自身及原型链上的可枚举属性</span></div><div class="line">    keys = _.allKeys(obj);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// 如果没有传入iteratee, 则用内置的keyInObj当默认iteratee</span></div><div class="line">    iteratee = keyInObj;</div><div class="line">    <span class="comment">// 展平传入的keys</span></div><div class="line">    keys = flatten(keys, <span class="literal">false</span>, <span class="literal">false</span>);</div><div class="line">    <span class="comment">// 将obj转换为对象</span></div><div class="line">    obj = <span class="built_in">Object</span>(obj);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 遍历keys, 判断相应的属性是否通过predicate, 如果是的话则push进结果数组result </span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</div><div class="line">    <span class="keyword">var</span> key = keys[i];</div><div class="line">    <span class="keyword">var</span> value = obj[key];</div><div class="line">    <span class="keyword">if</span> (iteratee(value, key, obj)) result[key] = value;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="omit"><a href="#omit" class="headerlink" title="_.omit"></a>_.omit</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回一个obj副本，只过滤出除去keys参数指定的属性值。 </span></div><div class="line"><span class="comment">// 或者接受一个判断函数predicate, 指定忽略哪个key。</span></div><div class="line">_.omit = restArgs(<span class="function"><span class="keyword">function</span>(<span class="params">obj, keys</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> iteratee = keys[<span class="number">0</span>], context;</div><div class="line">  <span class="comment">// 如果传入的是判断函数, 则将其转换为否定版本传入_.pick中</span></div><div class="line">  <span class="keyword">if</span> (_.isFunction(iteratee)) &#123;</div><div class="line">    iteratee = _.negate(iteratee);</div><div class="line">    <span class="keyword">if</span> (keys.length &gt; <span class="number">1</span>) context = keys[<span class="number">1</span>];</div><div class="line">  <span class="comment">// 如果传入的不是判断函数, 则将其先展平, 再装换为字符串</span></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    keys = _.map(flatten(keys, <span class="literal">false</span>, <span class="literal">false</span>), <span class="built_in">String</span>);</div><div class="line">    iteratee = <span class="function"><span class="keyword">function</span>(<span class="params">value, key</span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> !_.contains(keys, key);</div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> _.pick(obj, iteratee, context);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="create"><a href="#create" class="headerlink" title="_.create"></a>_.create</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建具有给定原型的新对象， 可选附加props 作为 返回对象 的属性。 </span></div><div class="line"><span class="comment">// 基本上，和Object.create一样， 但是没有所有的属性描述符。</span></div><div class="line">_.create = <span class="function"><span class="keyword">function</span>(<span class="params">prototype, props</span>) </span>&#123;</div><div class="line">  <span class="comment">// 以原型创建对象</span></div><div class="line">  <span class="keyword">var</span> result = baseCreate(prototype);</div><div class="line">  <span class="comment">// 如果传入了props, 则将其自身上的可枚举属性添加到result对象上(会</span></div><div class="line">  <span class="comment">// 覆盖result上已存在的同名属性)</span></div><div class="line">  <span class="keyword">if</span> (props) _.extendOwn(result, props);</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="clone"><a href="#clone" class="headerlink" title="_.clone"></a>_.clone</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建一个对象的浅拷贝, 拷贝所有自身及原型链上的属性, 但是只是连接引用,</span></div><div class="line"><span class="comment">// 并没有对属性也进行拷贝</span></div><div class="line">_.clone = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!_.isObject(obj)) <span class="keyword">return</span> obj;</div><div class="line">  <span class="comment">// 对数组使用简便的slice, 对其他对象使用内置的_.extend方法</span></div><div class="line">  <span class="keyword">return</span> _.isArray(obj) ? obj.slice() : _.extend(&#123;&#125;, obj);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="tap"><a href="#tap" class="headerlink" title="_.tap"></a>_.tap</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 用 obj 作为参数来调用函数interceptor，然后返回object。</span></div><div class="line"><span class="comment">// 这种方法的主要意图是作为函数链式调用的一环, </span></div><div class="line"><span class="comment">// 为了对此对象执行操作并返回对象本身。</span></div><div class="line">_.tap = <span class="function"><span class="keyword">function</span>(<span class="params">obj, interceptor</span>) </span>&#123;</div><div class="line">  <span class="comment">// 用interceptor操作obj</span></div><div class="line">  interceptor(obj);</div><div class="line">  <span class="comment">// 返回obj</span></div><div class="line">  <span class="keyword">return</span> obj;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="isMatch"><a href="#isMatch" class="headerlink" title="_.isMatch"></a>_.isMatch</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断attrs中的键值对是否包含在object中。</span></div><div class="line">_.isMatch = <span class="function"><span class="keyword">function</span>(<span class="params">object, attrs</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> keys = _.keys(attrs), length = keys.length;</div><div class="line">  <span class="comment">// 当object为null或undefined, attrs为空的时候, 返回true</span></div><div class="line">  <span class="keyword">if</span> (object == <span class="literal">null</span>) <span class="keyword">return</span> !length;</div><div class="line">  <span class="keyword">var</span> obj = <span class="built_in">Object</span>(object);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">    <span class="keyword">var</span> key = keys[i];</div><div class="line">    <span class="comment">// 当属性在obj中不存在 或 与attrs中的不相等时, 直接返回false</span></div><div class="line">    <span class="keyword">if</span> (attrs[key] !== obj[key] || !(key <span class="keyword">in</span> obj)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="私有方法eq与deepEq"><a href="#私有方法eq与deepEq" class="headerlink" title="私有方法eq与deepEq"></a>私有方法eq与deepEq</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 内部的递归比较函数, 用于_.isEqual</span></div><div class="line"><span class="keyword">var</span> eq, deepEq;</div><div class="line">eq = <span class="function"><span class="keyword">function</span>(<span class="params">a, b, aStack, bStack</span>) </span>&#123;</div><div class="line">  <span class="comment">// 0 === -0 会错误的返回true, 所以需特殊处理</span></div><div class="line">  <span class="keyword">if</span> (a === b) <span class="keyword">return</span> a !== <span class="number">0</span> || <span class="number">1</span> / a === <span class="number">1</span> / b;</div><div class="line">  <span class="comment">// 个人觉得这步多余了, 因为之前就判断了a===b的情况</span></div><div class="line">  <span class="keyword">if</span> (a == <span class="literal">null</span> || b == <span class="literal">null</span>) <span class="keyword">return</span> a === b;</div><div class="line">  <span class="comment">// 判断NaN, 因为NaN不等于自身, 需特殊处理</span></div><div class="line">  <span class="keyword">if</span> (a !== a) <span class="keyword">return</span> b !== b;</div><div class="line">  <span class="keyword">var</span> type = <span class="keyword">typeof</span> a;</div><div class="line">  <span class="comment">// 判断其类型, 如果俩个都不是对象类型即返回true。</span></div><div class="line">  <span class="keyword">if</span> (type !== <span class="string">'function'</span> &amp;&amp; type !== <span class="string">'object'</span> &amp;&amp; <span class="keyword">typeof</span> b != <span class="string">'object'</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">  <span class="comment">// a b都是对象, 则深入比较</span></div><div class="line">  <span class="keyword">return</span> deepEq(a, b, aStack, bStack);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// Internal recursive comparison function for `isEqual`.</span></div><div class="line">deepEq = <span class="function"><span class="keyword">function</span>(<span class="params">a, b, aStack, bStack</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果是_的实例, 则使用其_wrapped对象</span></div><div class="line">  <span class="keyword">if</span> (a <span class="keyword">instanceof</span> _) a = a._wrapped;</div><div class="line">  <span class="keyword">if</span> (b <span class="keyword">instanceof</span> _) b = b._wrapped;</div><div class="line">  <span class="comment">// 比较class名(即构造函数的名字)</span></div><div class="line">  <span class="keyword">var</span> className = toString.call(a);</div><div class="line">  <span class="comment">// class名不同, 则直接返回true</span></div><div class="line">  <span class="keyword">if</span> (className !== toString.call(b)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">  <span class="comment">// 根据不同的class名进行相应的判断处理</span></div><div class="line">  <span class="keyword">switch</span> (className) &#123;</div><div class="line">    <span class="comment">// Strings, numbers, regular expressions, dates, 和 booleans 直接通过值来比较 </span></div><div class="line">    <span class="keyword">case</span> <span class="string">'[object RegExp]'</span>:</div><div class="line">    <span class="comment">// RegExps 通过字符串形式比较</span></div><div class="line">    <span class="keyword">case</span> <span class="string">'[object String]'</span>:</div><div class="line">      <span class="comment">// String 也通过字符串形式比较 </span></div><div class="line">      <span class="comment">// 如`"5"`与 `new String("5")`相等.</span></div><div class="line">      <span class="keyword">return</span> <span class="string">''</span> + a === <span class="string">''</span> + b;</div><div class="line">    <span class="keyword">case</span> <span class="string">'[object Number]'</span>:</div><div class="line">      <span class="comment">// 通过对象是否等于自身来 判断NaN</span></div><div class="line">      <span class="keyword">if</span> (+a !== +a) <span class="keyword">return</span> +b !== +b;</div><div class="line">      <span class="comment">// 判断是否为-0与+0, 是的话则通过 1/+a === 1/b来判断</span></div><div class="line">      <span class="keyword">return</span> +a === <span class="number">0</span> ? <span class="number">1</span> / +a === <span class="number">1</span> / b : +a === +b;</div><div class="line">    <span class="keyword">case</span> <span class="string">'[object Date]'</span>:</div><div class="line">    <span class="keyword">case</span> <span class="string">'[object Boolean]'</span>:</div><div class="line">      <span class="comment">// 通过转换为数字来比较</span></div><div class="line">      <span class="keyword">return</span> +a === +b;</div><div class="line">    <span class="keyword">case</span> <span class="string">'[object Symbol]'</span>:</div><div class="line">      <span class="comment">// 通过其原型链上的valueOf来比较</span></div><div class="line">      <span class="keyword">return</span> SymbolProto.valueOf.call(a) === SymbolProto.valueOf.call(b);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> areArrays = className === <span class="string">'[object Array]'</span>;</div><div class="line">  <span class="keyword">if</span> (!areArrays) &#123;</div><div class="line">    <span class="comment">// 如果任一不是对象, 则直接返回false</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> a != <span class="string">'object'</span> || <span class="keyword">typeof</span> b != <span class="string">'object'</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 比较构造函数, 如果构造函数不同, 则不相等,</span></div><div class="line">    <span class="comment">// 但是不同frame下的Object和Array不相等, 所以需特殊处理</span></div><div class="line">    <span class="keyword">var</span> aCtor = a.constructor, bCtor = b.constructor;</div><div class="line">    <span class="keyword">if</span> (aCtor !== bCtor &amp;&amp; !(_.isFunction(aCtor) &amp;&amp; aCtor <span class="keyword">instanceof</span> aCtor &amp;&amp;</div><div class="line">                             _.isFunction(bCtor) &amp;&amp; bCtor <span class="keyword">instanceof</span> bCtor)</div><div class="line">                        &amp;&amp; (<span class="string">'constructor'</span> <span class="keyword">in</span> a &amp;&amp; <span class="string">'constructor'</span> <span class="keyword">in</span> b)) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 初始遍历对象的栈</span></div><div class="line">  <span class="comment">// 因为只有数组或者对象的判断才需要栈, 所以放这里初始化</span></div><div class="line">  <span class="comment">// 栈主要是为了判断数组或对象是否具有循环结构</span></div><div class="line">  aStack = aStack || [];</div><div class="line">  bStack = bStack || [];</div><div class="line">  <span class="keyword">var</span> length = aStack.length;</div><div class="line">  <span class="keyword">while</span> (length--) &#123;</div><div class="line">    <span class="comment">// 线性查找, 这里主要是为了查询是否是循环结构。</span></div><div class="line">    <span class="keyword">if</span> (aStack[length] === a) <span class="keyword">return</span> bStack[length] === b;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 将第一个对象推入栈中</span></div><div class="line">  aStack.push(a);</div><div class="line">  bStack.push(b);</div><div class="line"></div><div class="line">  <span class="comment">// 递归比较对象和数组</span></div><div class="line">  <span class="keyword">if</span> (areArrays) &#123;</div><div class="line">    <span class="comment">// 先比较长度</span></div><div class="line">    length = a.length;</div><div class="line">    <span class="keyword">if</span> (length !== b.length) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="comment">// 深比较, 忽略键名非数字以外的属性</span></div><div class="line">    <span class="keyword">while</span> (length--) &#123;</div><div class="line">      <span class="keyword">if</span> (!eq(a[length], b[length], aStack, bStack)) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// 深比较对象</span></div><div class="line">    <span class="keyword">var</span> keys = _.keys(a), key;</div><div class="line">    length = keys.length;</div><div class="line">    <span class="comment">// 先比较属性的数量</span></div><div class="line">    <span class="keyword">if</span> (_.keys(b).length !== length) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">while</span> (length--) &#123;</div><div class="line">      <span class="comment">// 深比较每个属性</span></div><div class="line">      key = keys[length];</div><div class="line">      <span class="comment">// 如果b不存在此key属性, 或者存在但不与a中的相对, 则返回false</span></div><div class="line">      <span class="keyword">if</span> (!(_.has(b, key) &amp;&amp; eq(a[key], b[key], aStack, bStack))) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 出栈</span></div><div class="line">  aStack.pop();</div><div class="line">  bStack.pop();</div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="isEqual"><a href="#isEqual" class="headerlink" title="_.isEqual"></a>_.isEqual</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 比较a、b是否相等, 利用内部私有的eq方法</span></div><div class="line">_.isEqual = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> eq(a, b);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="has"><a href="#has" class="headerlink" title="_.has"></a>_.has</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断key是否为obj自身的属性, 而非原型链上的属性</span></div><div class="line">_.has = <span class="function"><span class="keyword">function</span>(<span class="params">obj, key</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj != <span class="literal">null</span> &amp;&amp; hasOwnProperty.call(obj, key);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断一个对象是否为空(即其自身上不存在可枚举属性)</span></div><div class="line">_.isEmpty = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果传入的obj为null或undefined, 直接返回true</span></div><div class="line">  <span class="keyword">if</span> (obj == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  <span class="comment">// 如果是数组、字符串、 arguments对象, 直接判断其length属性是否为0</span></div><div class="line">  <span class="keyword">if</span> (isArrayLike(obj) &amp;&amp; (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) <span class="keyword">return</span> obj.length === <span class="number">0</span>;</div><div class="line">  <span class="comment">// 其他情况通过_.keys判断其自身是否有可枚举的属性</span></div><div class="line">  <span class="keyword">return</span> _.keys(obj).length === <span class="number">0</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的对象是否是dom元素</span></div><div class="line">_.isElement = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 通过nodeTyp来判断是否为dom元素</span></div><div class="line">  <span class="keyword">return</span> !!(obj &amp;&amp; obj.nodeType === <span class="number">1</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为数组,</span></div><div class="line"><span class="comment">// es5原生方法Array.isArray存在时则直接使用</span></div><div class="line">_.isArray = nativeIsArray || <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 利用Object.prototype.toString来判断</span></div><div class="line">  <span class="keyword">return</span> toString.call(obj) === <span class="string">'[object Array]'</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为对象</span></div><div class="line">_.isObject = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> type = <span class="keyword">typeof</span> obj;</div><div class="line">  <span class="comment">// 利用type直接判断, 我们知道typeof null也会返回object, 所以通过!!obj来过滤</span></div><div class="line">  <span class="keyword">return</span> type === <span class="string">'function'</span> || type === <span class="string">'object'</span> &amp;&amp; !!obj;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 添加一些类型判断函数: isArguments, isFunction, isString, isNumber, isDate, </span></div><div class="line"><span class="comment">// isRegExp, isError, isMap, isWeakMap, isSet, isWeakSet.</span></div><div class="line">_.each([<span class="string">'Arguments'</span>, <span class="string">'Function'</span>, <span class="string">'String'</span>, <span class="string">'Number'</span>, <span class="string">'Date'</span>, <span class="string">'RegExp'</span>, <span class="string">'Error'</span>, <span class="string">'Symbol'</span>, <span class="string">'Map'</span>, <span class="string">'WeakMap'</span>, <span class="string">'Set'</span>, <span class="string">'WeakSet'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">  _[<span class="string">'is'</span> + name] = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="comment">// 使用Object.prototype.toString来判断</span></div><div class="line">    <span class="keyword">return</span> toString.call(obj) === <span class="string">'[object '</span> + name + <span class="string">']'</span>;</div><div class="line">  &#125;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 定义一个用于IE9以下的isArguments回退版本, </span></div><div class="line"><span class="keyword">if</span> (!_.isArguments(<span class="built_in">arguments</span>)) &#123;</div><div class="line">  _.isArguments = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="comment">// 通过arguments上的callee来判断</span></div><div class="line">    <span class="keyword">return</span> _.has(obj, <span class="string">'callee'</span>);</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 优化isFuncion函数, 并修复一些在浏览器中出现的bug</span></div><div class="line"><span class="keyword">var</span> nodelist = root.document &amp;&amp; root.document.childNodes;</div><div class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> /./ != <span class="string">'function'</span> &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">Int8Array</span> != <span class="string">'object'</span> &amp;&amp; <span class="keyword">typeof</span> nodelist != <span class="string">'function'</span>) &#123;</div><div class="line">  _.isFunction = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="comment">// 个人认为这里的false很多余</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> obj == <span class="string">'function'</span> || <span class="literal">false</span>;</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为有限</span></div><div class="line">_.isFinite = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> !_.isSymbol(obj) &amp;&amp; <span class="built_in">isFinite</span>(obj) &amp;&amp; !<span class="built_in">isNaN</span>(<span class="built_in">parseFloat</span>(obj));</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为NaN</span></div><div class="line">_.isNaN = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 先用isNumber判断其为数字, 在用isNaN判断</span></div><div class="line">  <span class="keyword">return</span> _.isNumber(obj) &amp;&amp; <span class="built_in">isNaN</span>(obj);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为布尔类型</span></div><div class="line">_.isBoolean = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 前者判断字面量形式创建的boolean, 后者判断new构造函数形式创建的boolean</span></div><div class="line">  <span class="keyword">return</span> obj === <span class="literal">true</span> || obj === <span class="literal">false</span> || toString.call(obj) === <span class="string">'[object Boolean]'</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为null</span></div><div class="line">_.isNull = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj === <span class="literal">null</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 判断传入的obj是否为undefined</span></div><div class="line">_.isUndefined = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 为防止undefined被重写, 所以用void 0来判断</span></div><div class="line">  <span class="keyword">return</span> obj === <span class="keyword">void</span> <span class="number">0</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Underscore/">Underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2017/03/23/underscore源码解析之函数方法与对象方法/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/03/25/underscore源码解析之公共方法与模板引擎/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Underscore源码分析之公共方法与模板引擎的实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/21/underscore源码解析之集合方法与数组方法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Underscore源码分析之集合与数组方法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="underscore源码解析之函数方法与对象方法" data-title="Underscore源码分析之函数与对象方法" data-url="https://yuyanggong.github.io/2017/03/23/underscore源码解析之函数方法与对象方法/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jseryuyang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 勉强
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Underscore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">源码分析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ssh</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">单元测试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">异步</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">大四学生&lt;br&gt;&lt;br&gt;web前端开发实习中~&lt;br&gt;</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

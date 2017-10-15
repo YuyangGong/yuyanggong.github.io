@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="https://yuyanggong.github.io">
+  <title>node爬虫初体验——根据植物种名爬取其详细信息 | 勉强|技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="实践周的时候，老师布置实习作业，要求查清全校的树种类型，并要完善的写下其界门纲目科属种的信息。在实地调查的过程中，各类树种的种名我们都已获取，剩下的就是上网搜索其详细信息并记录下来了，这一步很繁琐，我觉得完全可以通过写脚本来自动化处理，而其中关键在于爬虫爬取植物的详细信息。 然后，开干吧~ 爬取网站的选取本来一开始想选取百度百科爬取内容的，但是百度百科的植物URL比较特殊。比如栀子花的百度百科UR">
+<meta name="keywords" content="JavaScript,node,爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node爬虫初体验——根据植物种名爬取其详细信息">
+<meta property="og:url" content="https://yuyanggong.github.io/2017/10/15/node爬虫初体验/index.html">
+<meta property="og:site_name" content="勉强|技术博客">
+<meta property="og:description" content="实践周的时候，老师布置实习作业，要求查清全校的树种类型，并要完善的写下其界门纲目科属种的信息。在实地调查的过程中，各类树种的种名我们都已获取，剩下的就是上网搜索其详细信息并记录下来了，这一步很繁琐，我觉得完全可以通过写脚本来自动化处理，而其中关键在于爬虫爬取植物的详细信息。 然后，开干吧~ 爬取网站的选取本来一开始想选取百度百科爬取内容的，但是百度百科的植物URL比较特殊。比如栀子花的百度百科UR">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-10-15T14:00:44.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node爬虫初体验——根据植物种名爬取其详细信息">
+<meta name="twitter:description" content="实践周的时候，老师布置实习作业，要求查清全校的树种类型，并要完善的写下其界门纲目科属种的信息。在实地调查的过程中，各类树种的种名我们都已获取，剩下的就是上网搜索其详细信息并记录下来了，这一步很繁琐，我觉得完全可以通过写脚本来自动化处理，而其中关键在于爬虫爬取植物的详细信息。 然后，开干吧~ 爬取网站的选取本来一开始想选取百度百科爬取内容的，但是百度百科的植物URL比较特殊。比如栀子花的百度百科UR">
+  
+    <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="/img/set/own.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">勉强</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">勉强</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/set/own.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">勉强</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-node爬虫初体验" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      node爬虫初体验——根据植物种名爬取其详细信息
+    </h1>
+  
+
+        <a href="/2017/10/15/node爬虫初体验/" class="archive-article-date">
+  	<time datetime="2017-10-15T02:16:20.684Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-15</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>实践周的时候，老师布置实习作业，要求查清全校的树种类型，并要完善的写下其界门纲目科属种的信息。在实地调查的过程中，各类树种的种名我们都已获取，剩下的就是上网搜索其详细信息并记录下来了，这一步很繁琐，我觉得完全可以通过写脚本来自动化处理，而其中关键在于爬虫爬取植物的详细信息。</p>
+<p>然后，开干吧~</p>
+<h3 id="爬取网站的选取"><a href="#爬取网站的选取" class="headerlink" title="爬取网站的选取"></a>爬取网站的选取</h3><p>本来一开始想选取百度百科爬取内容的，但是百度百科的植物URL比较特殊。<br>比如栀子花的百度百科URL为<code>http://baike.baidu.com/item/栀子花/77102</code>(其中’栀子花’为非法URI字符,需要encodeURI一下才合法,这里为表示清晰就直接这样显示了)。其后跟着一个<code>77102</code>数字ID, 为的是区分同名词条，然而，在写爬虫的时候，这个数字ID我们无法获取，所以不能正确获取URL,故放弃百度百科。那我们爬取哪个百科网站呢？视线转向互动百度，其栀子花的百科URL为<code>http://www.baike.com/wiki/栀子花</code>, 观察发现其URL的格式为<code>http://www.baike.com/wiki/${植物名称}</code>, 可以用作爬取网站(当然后面发现有这个其实也有同名词条的坑，不过可以判断解决)。<br><a id="more"></a></p>
+<h3 id="获取植物的名称"><a href="#获取植物的名称" class="headerlink" title="获取植物的名称"></a>获取植物的名称</h3><p>我们将所需爬取的植物种名，放在主目录的<code>input.txt</code>文件内，并在每两种名间用回车符(unix系统下为’\n’, mac系统下为’\r’, windows系统下为’\r\n’)隔开。其内容格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;input.txt&gt;</div><div class="line">香樟</div><div class="line">广玉兰</div><div class="line">雪松</div><div class="line">棕榈</div><div class="line">柚子树</div><div class="line">罗汉松</div><div class="line">泡桐</div><div class="line">杜英</div><div class="line">马尾松</div><div class="line">......</div><div class="line">......</div></pre></td></tr></table></figure>
+<p>在爬虫开始工作前，先读取所需爬取的数据，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 因为必须获取输入的植物种名才能开始爬取数据，故这里使用readFile的同步方法</span></div><div class="line"><span class="comment">// 并将其得到的内容以回车为界限分割成数组</span></div><div class="line"><span class="keyword">let</span> inputArr = fs.readFileSync(<span class="string">'./input.txt'</span>, <span class="string">'utf-8'</span>).split(<span class="regexp">/\r\n|\r|\n/</span>);</div></pre></td></tr></table></figure></p>
+<h3 id="根据已知植物种名获取其详细信息"><a href="#根据已知植物种名获取其详细信息" class="headerlink" title="根据已知植物种名获取其详细信息"></a>根据已知植物种名获取其详细信息</h3><p>前面我们获取了已知的植物种名，接下来要根据已知种名来获取其详细信息了，换言之，要开始写爬虫了。</p>
+<p>首先，我们需要安装cheerio库，帮助我们解析爬取到的html页面。其暴露的接口与JQuery类似，具体可见其<a href="https://www.npmjs.com/package/cheerio" target="_blank" rel="external">cherrio</a></p>
+<p>npm下安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install cheerio --save</div></pre></td></tr></table></figure></p>
+<p>yarn下安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn add cheerio</div></pre></td></tr></table></figure></p>
+<p>安装完cherrio后就可以开始写爬虫脚本了。</p>
+<p>先require所需的node模块<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>),</div><div class="line">  fs = <span class="built_in">require</span>(<span class="string">'fs'</span>),</div><div class="line">  cheerio = <span class="built_in">require</span>(<span class="string">'cheerio'</span>);</div></pre></td></tr></table></figure></p>
+<p>然后，根据之前获取到的植物种名，去爬取详细数据。一开始本来想利用node异步的特点去同时发起get请求的，但是因为网络原因(同一源的并发请求过多可能被目标网站认定为DDOS,而拒绝访问)。所以这里我们使用逐个发送get请求，上一条植物数据get请求成功后，然后再发送下一条get请求。核心代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> count = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPlantInfo</span>(<span class="params">i</span>) </span>&#123;</div><div class="line">  count = i + <span class="number">1</span>;</div><div class="line">  <span class="comment">// 输入数组的数据全部解析完毕后执行收尾函数，并跳出此递归</span></div><div class="line">  <span class="keyword">if</span>(i &gt;= inputArr.length) &#123;</div><div class="line">    endPlantFile();</div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">let</span> plantName = inputArr[i];</div><div class="line">  <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// getUrlContent函数，接受植物种名、通用url和一个回调函数，</span></div><div class="line">    <span class="comment">// 利用http.get获取所需爬取的网站的内容</span></div><div class="line">    getHtml(plantName, <span class="string">'http://www.baike.com/wiki/'</span>, (err, content) =&gt; &#123;</div><div class="line">      <span class="keyword">if</span>(err) <span class="built_in">console</span>.log(err);</div><div class="line">      resolve(content)</div><div class="line">    &#125;)</div><div class="line">  <span class="comment">// getInfo函数解析返回的html网页，提取我们需要的内容</span></div><div class="line">  &#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> getInfo(res))</div><div class="line">     <span class="comment">// appendPlantFile将返回的内容添加进文件中</span></div><div class="line">     .then(<span class="function"><span class="params">res</span> =&gt;</span> appendPlantFile(<span class="string">`./res/<span class="subst">$&#123;outputFlie&#125;</span>.json`</span>, res))</div><div class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;plantName&#125;</span> 保存完毕`</span>))</div><div class="line">       <span class="comment">// 递归继续get后续的植物详细信息</span></div><div class="line">       .then(<span class="function"><span class="params">v</span> =&gt;</span> getPlantInfo(i + <span class="number">1</span>))</div><div class="line">       .catch(<span class="function"><span class="params">e</span> =&gt;</span> <span class="built_in">console</span>.log(e.message));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面为大致结构。其中我们先通过<code>getHtml</code>获取目标植物页面的html，其实现如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取相关植物url返回的html网页</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getHtml</span>(<span class="params">name, url, callback</span>) </span>&#123;</div><div class="line">  <span class="comment">// 植物名需要编码一下</span></div><div class="line">  url += <span class="built_in">encodeURI</span>(name); </div><div class="line">  <span class="comment">// 发送请求</span></div><div class="line">  http.get(url, (res) =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> &#123; statusCode &#125; = res;</div><div class="line">    <span class="comment">// 当请求失败时, 打印失败信息, 并将失败的植物名保存</span></div><div class="line">    <span class="keyword">if</span>(statusCode !== <span class="number">200</span>) &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">`http.get for <span class="subst">$&#123;name&#125;</span>`</span>)</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">`fail. status code is <span class="subst">$&#123;statusCode&#125;</span>`</span>);</div><div class="line">      appendPlantFile(<span class="string">'./res/error.json'</span>, name+<span class="string">'\n'</span>)</div><div class="line">      <span class="keyword">return</span>; </div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 将拿到的html内容传给callback</span></div><div class="line">    <span class="keyword">let</span> contentArr = [];</div><div class="line">    res.on(<span class="string">'data'</span>, (res) =&gt; contentArr.push(res));</div><div class="line">    res.on(<span class="string">'end'</span>, () =&gt; &#123;</div><div class="line">      callback(<span class="literal">null</span>, [contentArr.join(<span class="string">''</span>), url]);</div><div class="line">    &#125;);</div><div class="line">  &#125;).on(<span class="string">'error'</span>, (e) =&gt; <span class="built_in">console</span>.log(e.message));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>拿到html内容以后, 我们借助<code>cherrio</code>这个库对其进行解析，并获取其中我们需要的信息。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 解析html网页，并从中筛选我们需要的信息</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getInfo</span>(<span class="params">resArr</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> $ = cheerio.load(resArr[<span class="number">0</span>]),</div><div class="line">    url = resArr[<span class="number">1</span>],</div><div class="line">    resObj = &#123;&#125;,</div><div class="line">    name = $(<span class="string">'h1'</span>).text();</div><div class="line">  </div><div class="line">  <span class="comment">// 防止同名词条干扰</span></div><div class="line">  <span class="keyword">if</span>(<span class="regexp">/\[/</span>.test(name)) &#123;</div><div class="line">    <span class="comment">// 如果是非植物的同名词条，则将其推入inputArr数组</span></div><div class="line">    <span class="comment">// 待后续重新加载词条</span></div><div class="line">    <span class="keyword">if</span>(!(<span class="regexp">/植物|花|新鲜|水果|木/</span>.test(name))) &#123;</div><div class="line">      inputArr.push(name.replace(<span class="regexp">/\[.*?\]/</span>, <span class="string">'[植物]'</span>));</div><div class="line">      getPlantInfo(inputArr.indexOf(name.replace(<span class="regexp">/\[.*?\]/</span>, <span class="string">''</span>)) + <span class="number">1</span>);</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`<span class="subst">$&#123;name&#125;</span> 为同名词条，需重新加载`</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  $(<span class="string">'#datamodule table td'</span>).each(<span class="function">(<span class="params">i, elem</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">let</span> text = $(elem).text();</div><div class="line">    <span class="keyword">if</span>(<span class="regexp">/\S/</span>.test(text)) &#123;</div><div class="line">      <span class="keyword">let</span> keyAndValue = text.split(<span class="string">'：'</span>)</div><div class="line">                  .map(<span class="function"><span class="params">v</span> =&gt;</span> v.replace(<span class="regexp">/\s|\n/g</span>, <span class="string">''</span>));</div><div class="line">      resObj[keyAndValue[<span class="number">0</span>]] = normalizeStr(keyAndValue[<span class="number">1</span>]);</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">  </div><div class="line">  resObj[<span class="string">'形态特征'</span>] = ($(<span class="string">'p'</span>).text().match(<span class="regexp">/[\u4e00-\u9fa5]*(乔木|灌木|草本|藤本)[\u4e00-\u9fa5]*/</span>)||[])[<span class="number">0</span>];</div><div class="line"></div><div class="line">  resObj.link = url;</div><div class="line"></div><div class="line">  <span class="comment">// 有的植物显示的别名，有的是中文别名，这里我们统一用别名</span></div><div class="line">  resObj[<span class="string">'别名'</span>] = resObj[<span class="string">'中文别名'</span>];</div><div class="line"></div><div class="line">  <span class="comment">// 统一分布区域都为分布</span></div><div class="line">  resObj[<span class="string">'分布'</span>] = [<span class="string">'分布'</span>, <span class="string">'分布区域'</span>, <span class="string">'主要区域'</span>]</div><div class="line">                    .map(<span class="function"><span class="params">v</span> =&gt;</span> resObj[v])</div><div class="line">                     .filter(<span class="function"><span class="params">v</span> =&gt;</span> v)[<span class="number">0</span>];</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(resObj);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后将我们获取到的结果对象字符串添加进指定的json文件中, 其实现也很简单。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">appendPlantFile</span>(<span class="params">file, res</span>) </span>&#123;</div><div class="line">  fs.appendFileSync(file, res+<span class="string">'\n'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来, 递归调用<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">getPlantInfo(i + <span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p>当获取了所有的数据后，我们根据最终的json文件，去生成excel表格，这里我们用到了<code>json2xls</code>这个库来转换。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">endPlantFile</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> content = fs.readFileSync(<span class="string">`./res/<span class="subst">$&#123;outputFlie&#125;</span>.json`</span>, <span class="string">'utf-8'</span>).split(<span class="regexp">/\n/</span>).slice(<span class="number">0</span>, <span class="number">-1</span>),</div><div class="line">    json = <span class="string">`[<span class="subst">$&#123;content.join(<span class="string">',\n'</span>)&#125;</span>]`</span>,</div><div class="line">    xls = json2xls(<span class="built_in">JSON</span>.parse(json), &#123;</div><div class="line">      fields: [<span class="string">'中文学名'</span>, ...<span class="string">'界门纲目科属种'</span>.split(<span class="string">''</span>), <span class="string">'别名'</span>, <span class="string">'分布'</span>, <span class="string">'形态特征'</span>, <span class="string">'link'</span>]</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">  fs.writeFileSync(<span class="string">`./res/<span class="subst">$&#123;outputFlie&#125;</span>.json`</span>, json);</div><div class="line">  fs.writeFileSync(<span class="string">`./res/<span class="subst">$&#123;outputFlie&#125;</span>.xlsx`</span>, xls, <span class="string">'binary'</span>);</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`全部植物解析完毕`</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最终，得到了包含所有界门纲目科属种信息的植物excel表格了，任务完成~</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2017/10/15/node爬虫初体验/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2017/09/30/【JavaScript】this全解析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【JavaScript】this全解析</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="node爬虫初体验" data-title="node爬虫初体验——根据植物种名爬取其详细信息" data-url="https://yuyanggong.github.io/2017/10/15/node爬虫初体验/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jseryuyang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 勉强
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Underscore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">源码分析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ssh</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">单元测试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">异步</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">大四学生&lt;br&gt;&lt;br&gt;web前端开发实习中~&lt;br&gt;</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
