@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://yuyanggong.github.io">
   <title>【JavaScript】this全解析 | 勉强|技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。 与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即this指向其调用者。 this的调用可以分为下面五种情况， 我们将从这五种情况来讨论  普通函数 方法函数 构造函数/class函数及其super 通过bind、call、apply绑">
+  <meta name="description" content="在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。 与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即this指向其调用者。 具体地，this的调用可以分为下面五种情况， 我们将从这五种情况来讨论  普通函数 方法函数 构造函数/class函数及其super 通过bind、call、ap">
 <meta name="keywords" content="JavaScript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JavaScript】this全解析">
 <meta property="og:url" content="https://yuyanggong.github.io/2017/09/30/【JavaScript】this全解析/index.html">
 <meta property="og:site_name" content="勉强|技术博客">
-<meta property="og:description" content="在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。 与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即this指向其调用者。 this的调用可以分为下面五种情况， 我们将从这五种情况来讨论  普通函数 方法函数 构造函数/class函数及其super 通过bind、call、apply绑">
+<meta property="og:description" content="在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。 与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即this指向其调用者。 具体地，this的调用可以分为下面五种情况， 我们将从这五种情况来讨论  普通函数 方法函数 构造函数/class函数及其super 通过bind、call、ap">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-10-15T13:52:29.511Z">
+<meta property="og:updated_time" content="2017-10-16T15:15:04.050Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JavaScript】this全解析">
-<meta name="twitter:description" content="在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。 与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即this指向其调用者。 this的调用可以分为下面五种情况， 我们将从这五种情况来讨论  普通函数 方法函数 构造函数/class函数及其super 通过bind、call、apply绑">
+<meta name="twitter:description" content="在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。 与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即this指向其调用者。 具体地，this的调用可以分为下面五种情况， 我们将从这五种情况来讨论  普通函数 方法函数 构造函数/class函数及其super 通过bind、call、ap">
   
     <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
   
@@ -173,7 +173,7 @@ ga('send', 'pageview');
       
         <p>在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清this, 其实并不会很难。</p>
 <p>与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即<strong>this指向其调用者</strong>。</p>
-<p>this的调用可以分为下面五种情况， 我们将从这五种情况来讨论</p>
+<p>具体地，this的调用可以分为下面五种情况， 我们将从这五种情况来讨论</p>
 <ul>
 <li>普通函数</li>
 <li>方法函数</li>
@@ -182,8 +182,20 @@ ga('send', 'pageview');
 <li>箭头函数<a id="more"></a>
 </li>
 </ul>
-<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>作为普通函数调用时</p>
-
+<h3 id="普通函数"><a href="#普通函数" class="headerlink" title="普通函数"></a>普通函数</h3><p>作为普通函数调用时，其this指向全局window<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">  inner(); <span class="comment">// 内部this指向window</span></div><div class="line">&#125;</div><div class="line">outer();</div></pre></td></tr></table></figure></p>
+<p>根据我们之前所说的<strong>this指向其调用者</strong>, 经分析可知这里</p>
+<ol>
+<li>其执行环境不在<code>window</code>下</li>
+<li>其调用者也不是<code>window</code>(非全局环境下作为默认函数调用是没有调用者的)。<br>然而<code>this</code>却指向<code>window</code>, 这是不合理的。<br><code>JavaScript</code>是一门在不断进化的语言，一开始的设计存在着诸多不合理的地方，除了题主所问的函数调用时<code>this</code>的指向问题，还有诸如重复声明，以及未声明便可以初始化的问题。<br>为了消除<code>Javascript</code>语法的一些不合理、不严谨、不安全之处，减少一些怪异行为等目的，ECMAscript 5添加了第二种运行模式： 严格模式。<br>在严格模式下，此处<code>this</code>会合理的指向，<code>console.log</code>打印出来的将是<code>undefined</code>(因为没有调用者)。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 指向undefined</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>)</div><div class="line">&#125;</div><div class="line">test()</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="方法函数"><a href="#方法函数" class="headerlink" title="方法函数"></a>方法函数</h3><p>作为方法函数调用时，则是之前一直说的<strong>this指向其调用者</strong>。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  test: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 调用者为obj, 故指向obj</span></div><div class="line">obj.test()</div></pre></td></tr></table></figure></p>
+<p>同样<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> outerObj = &#123;</div><div class="line">  innerObj: &#123;</div><div class="line">    fn: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>)</div><div class="line">    &#125;    </div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// this指向outerObj.innerObj</span></div><div class="line">outerObj.innerObj.fn()</div></pre></td></tr></table></figure></p>
+<p>当然, 需要注意的是, 这里的调用者是指执行时的直接调用者, 而不是声明时的储存位置。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj1 = &#123;</div><div class="line">  test: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">const</span> obj2 = &#123;&#125;</div><div class="line"><span class="comment">// 将obj1的test方法引用给obj2的fn</span></div><div class="line">obj2.fn = obj1.test</div><div class="line"><span class="comment">// 调用者为obj2, 故指向obj2</span></div><div class="line">obj2.fn()</div></pre></td></tr></table></figure></p>
+<p>当然, 有这种情况<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  fn: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// this指向obj</span></div><div class="line">obj.fn()</div><div class="line"><span class="comment">// this指向全局window</span></div><div class="line">(<span class="number">0</span>, obj.fn)()</div></pre></td></tr></table></figure></p>
+<p>为什么会发生这种现象呢, 其实<code>(0, obj.fn)</code>这个表达式的返回值即<code>obj.fn</code>指向的【源函数】, 实际上进行的是普通函数调用, 而不是方法调用。<br>在babel中, 也能常见到这种用法。</p>
+<h3 id="构造函数-class函数及其super"><a href="#构造函数-class函数及其super" class="headerlink" title="构造函数/class函数及其super"></a>构造函数/class函数及其super</h3><h3 id="通过bind、call、apply绑定this的函数"><a href="#通过bind、call、apply绑定this的函数" class="headerlink" title="通过bind、call、apply绑定this的函数"></a>通过bind、call、apply绑定this的函数</h3><p>我们也可以通过<code>bind</code>、<code>call</code>、<code>apply</code>来改变其this的指向。<br>其中</p>
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3>
       
 
       
