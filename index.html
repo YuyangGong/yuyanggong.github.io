@@ -153,6 +153,66 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-关于时区的一些总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/29/关于时区的一些总结/">关于时区的简单总结</a>
+    </h1>
+  
+
+        <a href="/2017/12/29/关于时区的一些总结/" class="archive-article-date">
+  	<time datetime="2017-12-29T08:06:00.998Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-29</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。例如，中国东8区的时间总比泰国东7区的时间早1小时，而比日本东9区的时间晚1小时。<br>以上是时区的基本概念, 在JavaScript的Date对象实例上, 我们可以看到与之相关如toGMTString, toUTCString之类的方法。那其中的GMT与UTC又是什么意思呢？</p>
+<ul>
+<li>GMT<br>代表的是Greenwich Mean Time, 即格林尼治时间, 又称为世界时, 中时区(零时区)。</li>
+<li>UTC<br>代表的是Coordinated Universal  Time, 即协调世界时，世界标准时间。协调世界时是以原子时秒长为基础，在时刻上尽量接近于世界时的一种时间计量系统, 其误差必须精确到0.9秒以内, 可以说是GMT更精准的一种表现。<br>故相较于GMT, 更推荐使用Date实例上UTC方法。</li>
+</ul>
+<p>有时候, 我们需要在服务器端保存我们的数据, 因为客户端的时区不尽相同，我们一般会在服务器端上将日期保存为UTC日期，然后客户端渲染的时候通过转换，将数据渲染为客户端时区的时间，在客户端保存时间，进行上传操作的时候，再转换为UTC时间保存。</p>
+<p>未完待续。。。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/date/">date</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/timezone/">timezone</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/29/关于时区的一些总结/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-node爬虫初体验" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -416,67 +476,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-多git账号配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/07/多git账号配置/">git多账号配置</a>
-    </h1>
-  
-
-        <a href="/2017/09/07/多git账号配置/" class="archive-article-date">
-  	<time datetime="2017-09-06T19:22:18.757Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-07</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近需要在本地电脑上配置多个git账号，通过ssh与多个远程仓库一一对应连接，稍微研究了下，便把一点心得写了下来。<br>其步骤分为以下六点。</p>
-<ol>
-<li>安装相关软件</li>
-<li>创建公私密钥</li>
-<li>上传密钥</li>
-<li>配置config文件</li>
-<li>验证与服务器是否联通</li>
-<li>配置本地邮箱与用户名
-        <a class="article-more-a"  href="/2017/09/07/多git账号配置/#more">more >></a>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssh/">ssh</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/07/多git账号配置/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -580,6 +579,14 @@ ga('send', 'pageview');
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">异步</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">date</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">timezone</a>
               </li>
             
             <div class="clearfix"></div>
