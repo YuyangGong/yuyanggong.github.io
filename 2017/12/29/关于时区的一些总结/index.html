@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://yuyanggong.github.io">
   <title>关于时区的简单总结 | 勉强|技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。例如，">
+  <meta name="description" content="为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。以上是">
 <meta name="keywords" content="JavaScript,date,timezone">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于时区的简单总结">
 <meta property="og:url" content="https://yuyanggong.github.io/2017/12/29/关于时区的一些总结/index.html">
 <meta property="og:site_name" content="勉强|技术博客">
-<meta property="og:description" content="为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。例如，">
+<meta property="og:description" content="为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。以上是">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-30T13:41:17.057Z">
+<meta property="og:updated_time" content="2018-01-14T15:37:17.694Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于时区的简单总结">
-<meta name="twitter:description" content="为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。例如，">
+<meta name="twitter:description" content="为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。以上是">
   
     <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
   
@@ -171,14 +171,16 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。例如，中国东8区的时间总比泰国东7区的时间早1小时，而比日本东9区的时间晚1小时。<br>以上是时区的基本概念, 在JavaScript的Date对象实例上, 我们可以看到与之相关如toGMTString, toUTCString之类的方法。那其中的GMT与UTC又是什么意思呢？</p>
+        <p>为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。<br>以上是时区的基本概念, 在<code>JavaScript</code>的<code>Date</code>对象实例上, 我们可以看到与之相关如<code>toGMTString</code>, <code>toUTCString</code>之类的方法。那其中的<code>GMT</code>与<code>UTC</code>又是什么意思呢？<br><a id="more"></a></p>
 <ul>
-<li>GMT<br>代表的是Greenwich Mean Time, 即格林尼治时间, 又称为世界时, 中时区(零时区)。</li>
-<li>UTC<br>代表的是Coordinated Universal  Time, 即协调世界时，世界标准时间。协调世界时是以原子时秒长为基础，在时刻上尽量接近于世界时的一种时间计量系统, 其误差必须精确到0.9秒以内, 可以说是GMT更精准的一种表现。<br>故相较于GMT, 更推荐使用Date实例上UTC方法。</li>
+<li><p>GMT<br>代表的是Greenwich Mean Time, 即格林尼治时间, 又称为世界时, 中时区(零时区), 是指<strong>英国格林尼治所在地的标准时间</strong>，也是表示地球自转速率的一种形式。以地球自转为基础的时间计量系统。地球自转的角度可用地方子午线相对于地球上的基本参考点的运动来度量。</p>
+</li>
+<li><p>UTC<br>代表的是Coordinated Universal  Time, 即协调世界时，世界标准时间。协调世界时是以原子时秒长为基础，在时刻上尽量接近于世界时的一种时间计量系统, 其误差必须精确到0.9秒以内, 可以说是GMT更精准的一种表现。</p>
+</li>
 </ul>
-<p>有时候, 我们需要在服务器端保存我们的数据, 因为客户端的时区不尽相同，我们一般会在服务器端上将日期保存为UTC日期，然后客户端渲染的时候通过转换，将数据渲染为客户端时区的时间，在客户端保存时间，进行上传操作的时候，再转换为UTC时间保存。</p>
-<p>格式问题， 有的日期格式是chrome支持，但是safari不支持的。</p>
-<p>未完待续。。。</p>
+<p>故如果有需求, 相较于GMT方法(实际上已从Web标准中删除), 更推荐使用Date实例上UTC方法。</p>
+<p>有时候, 我们需要在服务器端保存我们的数据, 因为客户端的时区不尽相同，我们一般会在服务器端上将日期保存为UTC日期，然后客户端渲染的时候通过转换，将数据渲染为客户端时区的时间，在客户端保存时间，用户进行上传操作的时候，再转换为UTC时间保存。</p>
+<p>一些值得注意的问题<br>格式问题， 有的日期格式是chrome支持，但是safari不支持的。</p>
 
       
 
@@ -299,7 +301,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 勉强
+    		&copy; 2018 勉强
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

@@ -171,15 +171,8 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。例如，中国东8区的时间总比泰国东7区的时间早1小时，而比日本东9区的时间晚1小时。<br>以上是时区的基本概念, 在JavaScript的Date对象实例上, 我们可以看到与之相关如toGMTString, toUTCString之类的方法。那其中的GMT与UTC又是什么意思呢？</p>
-<ul>
-<li>GMT<br>代表的是Greenwich Mean Time, 即格林尼治时间, 又称为世界时, 中时区(零时区)。</li>
-<li>UTC<br>代表的是Coordinated Universal  Time, 即协调世界时，世界标准时间。协调世界时是以原子时秒长为基础，在时刻上尽量接近于世界时的一种时间计量系统, 其误差必须精确到0.9秒以内, 可以说是GMT更精准的一种表现。<br>故相较于GMT, 更推荐使用Date实例上UTC方法。</li>
-</ul>
-<p>有时候, 我们需要在服务器端保存我们的数据, 因为客户端的时区不尽相同，我们一般会在服务器端上将日期保存为UTC日期，然后客户端渲染的时候通过转换，将数据渲染为客户端时区的时间，在客户端保存时间，进行上传操作的时候，再转换为UTC时间保存。</p>
-<p>格式问题， 有的日期格式是chrome支持，但是safari不支持的。</p>
-<p>未完待续。。。</p>
-
+        <p>为了克服时间上的混乱，1884年在华盛顿召开的一次国际经度会议上，规定将全球划分为24个时区（东、西各12个时区）。规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。<br>以上是时区的基本概念, 在<code>JavaScript</code>的<code>Date</code>对象实例上, 我们可以看到与之相关如<code>toGMTString</code>, <code>toUTCString</code>之类的方法。那其中的<code>GMT</code>与<code>UTC</code>又是什么意思呢？<br>
+        <a class="article-more-a"  href="/2017/12/29/关于时区的一些总结/#more">more >></a>
       
 
       
@@ -491,7 +484,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 勉强
+    		&copy; 2018 勉强
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
