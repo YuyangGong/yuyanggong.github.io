@@ -153,6 +153,95 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-贝格尔编排法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/12/贝格尔编排法/">贝格尔编排法</a>
+    </h1>
+  
+
+        <a href="/2017/09/12/贝格尔编排法/" class="archive-article-date">
+  	<time datetime="2017-09-12T13:51:55.635Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-12</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>贝格尔编排法从1985年起，世界性排球比赛多采用“贝格尔”编排法。其优点是单数队参加时可避免第二轮的轮空队从第四轮起每场都与前一轮的轮空队比赛的不合理现象。</p>
+<h2 id="编排步骤"><a href="#编排步骤" class="headerlink" title="编排步骤"></a>编排步骤</h2><p>一、将参赛队伍按顺序分为俩部分，前一半和后一半各为一部分，若参赛队伍数量为单数则在后面补数字“0”凑成双数。</p>
+<p>如：参赛队伍为1、2、3、4、5、6、7等七支队伍，则将其分成1、2、3、4和5、6、7、0俩部分。</p>
+<p>二、分为俩部分后，前一部分由1号开始，自上而下写在左边；后一部分的数自下而上写在右边，然后用横线把相对的号数连接起来。这即是第一轮的比赛。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">l</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">----</td>
+<td style="text-align:center">5</td>
+</tr>
+</tbody>
+</table>
+<p>三、第二轮开始将第一轮右上角的编号(“0”或最大的一个代号数)移到左角上，第三轮又移回右角上，以此类推。即单数轮次时“0”或最大的一个代号在右上角，双数轮次时则在左上角。且每轮将除了“0”或最大一个代号以外的每个位置的数字，沿逆时针方向移动n（n等于(队伍数量-1)/2取整）个位置，当然移动时遇到“0”或最大的一个代号则跳过。<br>
+        <a class="article-more-a"  href="/2017/09/12/贝格尔编排法/#more">more >></a>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/12/贝格尔编排法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-多git账号配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -398,71 +487,9 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-underscore源码解析之整体结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/16/underscore源码解析之整体结构/">Underscore源码分析之整体结构</a>
-    </h1>
-  
-
-        <a href="/2017/03/16/underscore源码解析之整体结构/" class="archive-article-date">
-  	<time datetime="2017-03-16T10:37:04.486Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-16</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>库名: underscore</li>
-<li>源码地址: <a href="https://github.com/jashkenas/underscore">https://github.com/jashkenas/underscore</a></li>
-<li>源码版本: 1.8.3</li>
-<li>分析内容: 整体结构</li>
-</ul>
-<hr>
-<h3 id="环境兼容"><a href="#环境兼容" class="headerlink" title="环境兼容"></a>环境兼容</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 通过IIFE避免变量全局污染</span></div><div class="line"></div><div class="line">  <span class="comment">// 统一根对象，在`webWorker`中指向`self`, 在服务器(nodeJS)上指向`global`,</span></div><div class="line">  <span class="comment">// 在其他情况下指向this(在浏览器中, 因函数调用, this将指向window);</span></div><div class="line">  <span class="keyword">var</span> root = <span class="keyword">typeof</span> self == <span class="string">'object'</span> &amp;&amp; self.self === self &amp;&amp; self ||</div><div class="line">      <span class="keyword">typeof</span> global == <span class="string">'object'</span> &amp;&amp; global.global === global &amp;&amp; global ||</div><div class="line">      <span class="keyword">this</span>;</div><div class="line"></div><div class="line">  <span class="comment">// 在nodeJS(或者其他支持commonJS的环境)中暴露Underscore对象, 且向后兼容其旧API。 </span></div><div class="line">  <span class="comment">// 如果不是nodeJS环境, 则把Underscore对象挂载在根对象root上。</span></div><div class="line">  <span class="comment">// ('nodeType' 用来检测module和exports不是HTML元素</span></div><div class="line">  <span class="comment">// 因HTML5中, 具有ID的HTML元素, 其引用会被直接挂载在全局的同名[id名]变量上)</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> exports != <span class="string">'undefined'</span> &amp;&amp; !exports.nodeType) &#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> != <span class="string">'undefined'</span> &amp;&amp; !<span class="built_in">module</span>.nodeType &amp;&amp; <span class="built_in">module</span>.exports) &#123;</div><div class="line">    exports = <span class="built_in">module</span>.exports = _;</div><div class="line">  &#125;</div><div class="line">  exports._ = _;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  root._ = _;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 在支持AMD的环境中, 暴露Underscore对象</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> define == <span class="string">'function'</span> &amp;&amp; define.amd) &#123;</div><div class="line">  define(<span class="string">'underscore'</span>, [], <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> _;</div><div class="line">  &#125;);</div><div class="line">  &#125; </div><div class="line">&#125;());</div></pre></td></tr></table></figure>
-<p>对环境做了判断, 用root引用全局对象, 在相应的环境中指向相应的全局变量, 使表现一致。且支持CommonJS, AMD等模块化规范, 兼容了各种环境。<br>
-        <a class="article-more-a"  href="/2017/03/16/underscore源码解析之整体结构/#more">more >></a>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Underscore/">Underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/16/underscore源码解析之整体结构/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -575,6 +602,14 @@ ga('send', 'pageview');
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">Date</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue-loader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">test</a>
               </li>
             
             <div class="clearfix"></div>
