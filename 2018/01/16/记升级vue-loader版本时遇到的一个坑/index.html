@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="勉强|技术博客">
 <meta property="og:description" content="最近对公司的一个Vue项目进行了依赖升级, 主要是将webpack1升级到了webpack3, 同时也将原本项目的Vue、Vue-router、Vuex、Vue-loader等一系列依赖进行了升级, 升级过程中的相关配置参考了Vue-cli中webpack的template, 主要是在其上做了一些适应我们项目的调整, 整体过程还是很轻松愉快的, 但是在整个过程中也遇到了一些小坑, 主要集中在单元测">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-16T15:38:48.331Z">
+<meta property="og:updated_time" content="2018-01-16T15:50:01.160Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记升级vue-loader版本时遇到的一个坑">
 <meta name="twitter:description" content="最近对公司的一个Vue项目进行了依赖升级, 主要是将webpack1升级到了webpack3, 同时也将原本项目的Vue、Vue-router、Vuex、Vue-loader等一系列依赖进行了升级, 升级过程中的相关配置参考了Vue-cli中webpack的template, 主要是在其上做了一些适应我们项目的调整, 整体过程还是很轻松愉快的, 但是在整个过程中也遇到了一些小坑, 主要集中在单元测">
@@ -185,7 +185,17 @@ ga('send', 'pageview');
 <p>// before<br><code>const Foo = require(&#39;./Foo.vue&#39;)</code></p>
 <p>// after<br><code>const Foo = require(&#39;./Foo.vue&#39;).default</code></p>
 </blockquote>
-<p>原来, 在vue-loader@13.0.0中, 为了支持<code>webpack3</code>中的<code>Scope Hoisting</code>(知乎上有篇<a href="https://zhuanlan.zhihu.com/p/27980441" target="_blank" rel="external">相关文章</a>写的很详细), <code>esModule</code>选项被默认设置为<code>true</code>, </p>
+<p>原来, 在vue-loader@13.0.0中, 为了支持<code>webpack3</code>中的基于esModule的<code>Scope Hoisting</code>(知乎上有篇<a href="https://zhuanlan.zhihu.com/p/27980441" target="_blank" rel="external">相关文章</a>写的很详细), <code>esModule</code>选项被默认设置为<code>true</code>。</p>
+<p>知道了问题产生的原因, 那解决办法也就相应出来了。大致是俩种。</p>
+<ul>
+<li><p>第一种 更改我们测试里的<code>require</code>语法, 将<code>const inject = require(&#39;!!vue-loader?inject!src/componentA.vue&#39;)</code>修改为<code>const inject = require(&#39;!!vue-loader?inject!src/componentA.vue&#39;).default</code></p>
+</li>
+<li><p>第二种 修改测试的config, 在测试环境时, 将vue-loader的<code>esModule</code>选项设置为<code>false</code></p>
+</li>
+</ul>
+<p>因为我们的测试文件比较多, 采用第一种方法, 就算用编辑器(如sublime)的全局replace, 也要手动去一个一个保存, 较为繁琐, 而手动写一个node脚本处理也有一定的时间成本。所以这里我选择采用第二种解决方法, 直接修改测试环境的配置, 很简单, 只需要在我们的<code>webpack.test.conf.js中</code>加上一段代码处理就OK：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// solve vue-loader@13.0.0 breaking change https://github.com/vuejs/vue-loader/releases/tag/v13.0.0</span></div><div class="line">webpackConfig.module.rules.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (v.loader === <span class="string">'vue-loader'</span>) &#123;</div><div class="line">    v.options.esModule = <span class="literal">false</span></div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>好的, 问题解决了~</p>
+<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><p><a href="https://github.com/vuejs/vue-loader/releases/tag/v13.0.0" target="_blank" rel="external">vue-loader@13.0.0 release</a><br><a href="https://zhuanlan.zhihu.com/p/27980441" target="_blank" rel="external">webpack3 Scope Hoisting</a></p>
 
       
 
