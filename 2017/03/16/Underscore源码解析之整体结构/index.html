@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="https://yuyanggong.github.io">
+  <title>Underscore源码分析之整体结构 | 勉强|技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 整体结构   环境兼容1234567891011121314151617181920212223242526272829(function() &amp;#123;  // 通过IIFE避免变量全局污染  // 统一根对象，在`webWorker`">
+<meta name="keywords" content="JavaScript,Underscore,源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Underscore源码分析之整体结构">
+<meta property="og:url" content="https://yuyanggong.github.io/2017/03/16/underscore源码解析之整体结构/index.html">
+<meta property="og:site_name" content="勉强|技术博客">
+<meta property="og:description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 整体结构   环境兼容1234567891011121314151617181920212223242526272829(function() &amp;#123;  // 通过IIFE避免变量全局污染  // 统一根对象，在`webWorker`">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-03-20T10:32:02.862Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Underscore源码分析之整体结构">
+<meta name="twitter:description" content="库名: underscore 源码地址: https://github.com/jashkenas/underscore 源码版本: 1.8.3 分析内容: 整体结构   环境兼容1234567891011121314151617181920212223242526272829(function() &amp;#123;  // 通过IIFE避免变量全局污染  // 统一根对象，在`webWorker`">
+  
+    <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="/img/set/own.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">勉强</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/读书笔记/">读书笔记</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">勉强</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="/img/set/own.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">勉强</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">种一棵树最好的时间是十年前, 其次是现在。</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/读书笔记/">读书笔记</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/yuyanggong" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mianqiang/activities" title="zhihu"><i class="icon-zhihu"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:421736079@qq.com" title="mail"><i class="icon-mail"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-underscore源码解析之整体结构" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Underscore源码分析之整体结构
+    </h1>
+  
+
+        <a href="/2017/03/16/underscore源码解析之整体结构/" class="archive-article-date">
+  	<time datetime="2017-03-16T10:37:04.486Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-16</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>库名: underscore</li>
+<li>源码地址: <a href="https://github.com/jashkenas/underscore" target="_blank" rel="external">https://github.com/jashkenas/underscore</a></li>
+<li>源码版本: 1.8.3</li>
+<li>分析内容: 整体结构</li>
+</ul>
+<hr>
+<h3 id="环境兼容"><a href="#环境兼容" class="headerlink" title="环境兼容"></a>环境兼容</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 通过IIFE避免变量全局污染</span></div><div class="line"></div><div class="line">  <span class="comment">// 统一根对象，在`webWorker`中指向`self`, 在服务器(nodeJS)上指向`global`,</span></div><div class="line">  <span class="comment">// 在其他情况下指向this(在浏览器中, 因函数调用, this将指向window);</span></div><div class="line">  <span class="keyword">var</span> root = <span class="keyword">typeof</span> self == <span class="string">'object'</span> &amp;&amp; self.self === self &amp;&amp; self ||</div><div class="line">      <span class="keyword">typeof</span> global == <span class="string">'object'</span> &amp;&amp; global.global === global &amp;&amp; global ||</div><div class="line">      <span class="keyword">this</span>;</div><div class="line"></div><div class="line">  <span class="comment">// 在nodeJS(或者其他支持commonJS的环境)中暴露Underscore对象, 且向后兼容其旧API。 </span></div><div class="line">  <span class="comment">// 如果不是nodeJS环境, 则把Underscore对象挂载在根对象root上。</span></div><div class="line">  <span class="comment">// ('nodeType' 用来检测module和exports不是HTML元素</span></div><div class="line">  <span class="comment">// 因HTML5中, 具有ID的HTML元素, 其引用会被直接挂载在全局的同名[id名]变量上)</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> exports != <span class="string">'undefined'</span> &amp;&amp; !exports.nodeType) &#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> != <span class="string">'undefined'</span> &amp;&amp; !<span class="built_in">module</span>.nodeType &amp;&amp; <span class="built_in">module</span>.exports) &#123;</div><div class="line">    exports = <span class="built_in">module</span>.exports = _;</div><div class="line">  &#125;</div><div class="line">  exports._ = _;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  root._ = _;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 在支持AMD的环境中, 暴露Underscore对象</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> define == <span class="string">'function'</span> &amp;&amp; define.amd) &#123;</div><div class="line">  define(<span class="string">'underscore'</span>, [], <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> _;</div><div class="line">  &#125;);</div><div class="line">  &#125; </div><div class="line">&#125;());</div></pre></td></tr></table></figure>
+<p>对环境做了判断, 用root引用全局对象, 在相应的环境中指向相应的全局变量, 使表现一致。且支持CommonJS, AMD等模块化规范, 兼容了各种环境。<br><a id="more"></a></p>
+<h3 id="避免变量名’-’冲突"><a href="#避免变量名’-’冲突" class="headerlink" title="避免变量名’_’冲突"></a>避免变量名’_’冲突</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 保留之前全局上挂载的'_'的值</span></div><div class="line"><span class="keyword">var</span> previousUnderscore = root._;</div><div class="line"></div><div class="line"><span class="comment">// 将之前全局上挂载的'_'的值, 重新赋值给'_', '_'不再指向Underscore</span></div><div class="line"><span class="comment">// 此方法执行后返回this(当其调用者为Underscore的时候, 其this也就指向Underscore对象)</span></div><div class="line">_.noConflict = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  root._ = previousUnderscore;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="Underscore构造函数"><a href="#Underscore构造函数" class="headerlink" title="Underscore构造函数"></a>Underscore构造函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建Underscore的安全引用, 当不用new调用构造函数时, 也会正确的实例化</span></div><div class="line"><span class="comment">// 创造出来的实例对象, 目前只有一个_wrapped属性, 指向之前传的参数obj</span></div><div class="line"><span class="keyword">var</span> _ = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line"><span class="keyword">if</span> (obj <span class="keyword">instanceof</span> _) <span class="keyword">return</span> obj;</div><div class="line"><span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> _)) <span class="keyword">return</span> <span class="keyword">new</span> _(obj);</div><div class="line"><span class="keyword">this</span>._wrapped = obj;  </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="创建原型链及其上方法的快速引用"><a href="#创建原型链及其上方法的快速引用" class="headerlink" title="创建原型链及其上方法的快速引用"></a>创建原型链及其上方法的快速引用</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 将原型链赋值给变量, 有利于代码压缩</span></div><div class="line"><span class="keyword">var</span> ArrayProto = <span class="built_in">Array</span>.prototype, ObjProto = <span class="built_in">Object</span>.prototype;</div><div class="line"><span class="keyword">var</span> SymbolProto = <span class="keyword">typeof</span> <span class="built_in">Symbol</span> !== <span class="string">'undefined'</span> ? <span class="built_in">Symbol</span>.prototype : <span class="literal">null</span>;</div><div class="line"></div><div class="line"><span class="comment">// 创建Array原型上的push,slice和Object原型上的toString,hasOwnProperty方法的快速引用。</span></div><div class="line"><span class="keyword">var</span> push = ArrayProto.push,</div><div class="line">    slice = ArrayProto.slice,</div><div class="line">    toString = ObjProto.toString,</div><div class="line">    hasOwnProperty = ObjProto.hasOwnProperty;</div><div class="line"></div><div class="line"><span class="comment">// 创建 ES5 中的isArray, keys, create的原生函数的快速引用</span></div><div class="line"><span class="keyword">var</span> nativeIsArray = <span class="built_in">Array</span>.isArray,</div><div class="line">    nativeKeys = <span class="built_in">Object</span>.keys,</div><div class="line">    nativeCreate = <span class="built_in">Object</span>.create;</div></pre></td></tr></table></figure>
+<p>将原型链或链上方法的引用给变量, 其好处有如下:</p>
+<ul>
+<li>减少有利于代码压缩, 为生产环境中的代码量减重。</li>
+<li>减少对象上属性的查询次数, 优化性能。</li>
+<li><del>少打一些字</del>(但考虑到这些都是私有方法及对象, 所以并不算)。</li>
+</ul>
+<h3 id="链式调用的实现"><a href="#链式调用的实现" class="headerlink" title="链式调用的实现"></a>链式调用的实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">// 一个挂载在Underscore上的方法, 用于创建可以链式调用的对象。</span></div><div class="line">  <span class="comment">// 其以obj为参数, 创建一个Underscore实例, 并将实例上的_chain属性设置为true。</span></div><div class="line">  _.chain = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> instance = _(obj);</div><div class="line">    instance._chain = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">return</span> instance;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// 一个私有的辅助函数, 如果传入的实例已经经过_.chain处理了(即instance._chain为真)</span></div><div class="line">  <span class="comment">// 则返回再次的链式调用, 否则返回第二个参数obj</span></div><div class="line">  <span class="keyword">var</span> chainResult = <span class="function"><span class="keyword">function</span>(<span class="params">instance, obj</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> instance._chain ? _(obj).chain() : obj;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// 给Underscore对象添加自定义方法。</span></div><div class="line">  _.mixin = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="comment">// 遍历obj对象上方法, 在Underscore对象上创建同名方法, 连接引用。</span></div><div class="line">    _.each(_.functions(obj), <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> func = _[name] = obj[name];</div><div class="line">      <span class="comment">// 在原型链上也创建同名方法, 此方法内部处理的对象是挂载在实例上的_wrapped对象</span></div><div class="line">      _.prototype[name] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="comment">// 将实例上的_wrapped对象, 以及传入的参数都保存进args数组</span></div><div class="line">        <span class="keyword">var</span> args = [<span class="keyword">this</span>._wrapped];</div><div class="line">        push.apply(args, <span class="built_in">arguments</span>);</div><div class="line">        <span class="comment">// 调用私有方法chainResult, 传入实例作为第一参数</span></div><div class="line">        <span class="comment">// 传入 经过Underscore对象上相关方法处理后的对象作为第二参数</span></div><div class="line">        <span class="keyword">return</span> chainResult(<span class="keyword">this</span>, func.apply(_, args));</div><div class="line">      &#125;;</div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">return</span> _;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line"><span class="comment">// 将Underscore对象上所有的方法添加到其原型上。</span></div><div class="line">  _.mixin(_);</div><div class="line"></div><div class="line">  <span class="comment">// 将数组原型链中会改变原数组的方法添加到Underscore中。</span></div><div class="line">  _.each([<span class="string">'pop'</span>, <span class="string">'push'</span>, <span class="string">'reverse'</span>, <span class="string">'shift'</span>, <span class="string">'sort'</span>, <span class="string">'splice'</span>, <span class="string">'unshift'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> method = ArrayProto[name];</div><div class="line">    <span class="comment">// 同样也稍作修改添加到原型上。</span></div><div class="line">    _.prototype[name] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> obj = <span class="keyword">this</span>._wrapped;</div><div class="line">      method.apply(obj, <span class="built_in">arguments</span>);</div><div class="line">      <span class="keyword">if</span> ((name === <span class="string">'shift'</span> || name === <span class="string">'splice'</span>) &amp;&amp; obj.length === <span class="number">0</span>) <span class="keyword">delete</span> obj[<span class="number">0</span>];</div><div class="line">      <span class="keyword">return</span> chainResult(<span class="keyword">this</span>, obj);</div><div class="line">    &#125;;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="comment">// 将数组原型链中不会改变原数组的方法添加到Underscore中。</span></div><div class="line">  <span class="comment">// 与上面的差别主要是, 这里返回的都是新对象, 而上面是原本的对象</span></div><div class="line">  _.each([<span class="string">'concat'</span>, <span class="string">'join'</span>, <span class="string">'slice'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> method = ArrayProto[name];</div><div class="line">    _.prototype[name] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> chainResult(<span class="keyword">this</span>, method.apply(<span class="keyword">this</span>._wrapped, <span class="built_in">arguments</span>));</div><div class="line">    &#125;;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="comment">// 获取链式调用的结果对象, 即this._wrapped</span></div><div class="line">  _.prototype.value = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._wrapped;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="comment">// 将原型链上的value方法的引用给原型链上的valueOf和toJSON</span></div><div class="line">  <span class="comment">// 以便JS引擎内部取值或者JSON字符串化时, 处理的对象是this._wrapped</span></div><div class="line">  <span class="comment">// 而不是实例对象</span></div><div class="line">  _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;</div><div class="line">  </div><div class="line">  <span class="comment">// 写原型链上的toString方法</span></div><div class="line">  <span class="comment">// 以便JS引擎内部调用Underscore实例的toString方法(如instance + 'string')时,</span></div><div class="line">  <span class="comment">// 返回的是其this._wrapped的字符串形式</span></div><div class="line">  <span class="comment">// 而不是实例的字符串形式</span></div><div class="line">  _.prototype.toString = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">String</span>(<span class="keyword">this</span>._wrapped);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>将Underscore构造函数作为对象的包装器，在实例化时接受一个对象为参数，并将此对象作为实例的_wrapped属性保存, 然后将Underscore的方法稍作修改放置在其原型上(修改主要是为了原型链上的方法操作的是_wrapped对象)，以便实例可以通过原型链来查询到相关方法并使用, 巧妙的实现了链式调用。内部也通过_chain属性来判断是否链式调用，如果是的话则返回包装后的对象(即Underscore实例,具有_wrapped和_chain属性及Underscore原型链)，否则直接返回源对象(非Underscore实例)。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Underscore/">Underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2017/03/16/underscore源码解析之整体结构/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/03/21/underscore源码解析之集合方法与数组方法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Underscore源码分析之集合与数组方法
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="underscore源码解析之整体结构" data-title="Underscore源码分析之整体结构" data-url="https://yuyanggong.github.io/2017/03/16/underscore源码解析之整体结构/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jseryuyang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 勉强
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">JavaScript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Underscore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">源码分析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ssh</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">单元测试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">异步</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">date</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">timezone</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Date</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Vue-loader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">test</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">font</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">font-face</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">bug</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">大四学生&lt;br&gt;&lt;br&gt;web前端开发实习中~&lt;br&gt;</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
