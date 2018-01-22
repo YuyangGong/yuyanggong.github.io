@@ -171,7 +171,13 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>最近写一个内嵌于微信中的页面, 用到了<a href="https://github.com/Tencent/weui" target="_blank" rel="external">weui</a>样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable.</div></pre></td></tr></table></figure></p>
+<p>考虑到是weui的字体所造成的问题, 决定去weui的官方repo下issue中寻求帮助, 结果发现在相关的IE兼容性问题中, weui的维护者表明目前暂时不考虑对IE的兼容。维护人<a href="https://github.com/Tencent/weui/issues/568" target="_blank" rel="external">原话</a>如下：</p>
+<blockquote>
+<p>weui主要是针对移动端页面而开发的，IE可能暂时不做考虑</p>
+</blockquote>
+<p>那么只好自己想办法解决啦。<br>
+        <a class="article-more-a"  href="/2018/01/19/如何优雅的给字体降级/#more">more >></a>
       
 
       

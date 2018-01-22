@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://yuyanggong.github.io">
   <title>如何优雅的给字体降级 | 勉强|技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Web前端开发实习中，乐于学习各种新技术~">
+  <meta name="description" content="最近写一个内嵌于微信中的页面, 用到了weui样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误1CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable. 考虑到是weui的字体所造成的问题, 决定去weui的官方rep">
 <meta name="keywords" content="font,font-face,bug">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何优雅的给字体降级">
 <meta property="og:url" content="https://yuyanggong.github.io/2018/01/19/如何优雅的给字体降级/index.html">
 <meta property="og:site_name" content="勉强|技术博客">
-<meta property="og:description" content="Web前端开发实习中，乐于学习各种新技术~">
+<meta property="og:description" content="最近写一个内嵌于微信中的页面, 用到了weui样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误1CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable. 考虑到是weui的字体所造成的问题, 决定去weui的官方rep">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-19T14:32:43.016Z">
+<meta property="og:updated_time" content="2018-01-22T15:43:45.329Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何优雅的给字体降级">
-<meta name="twitter:description" content="Web前端开发实习中，乐于学习各种新技术~">
+<meta name="twitter:description" content="最近写一个内嵌于微信中的页面, 用到了weui样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误1CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable. 考虑到是weui的字体所造成的问题, 决定去weui的官方rep">
   
     <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
   
@@ -171,7 +171,29 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>最近写一个内嵌于微信中的页面, 用到了<a href="https://github.com/Tencent/weui" target="_blank" rel="external">weui</a>样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable.</div></pre></td></tr></table></figure></p>
+<p>考虑到是weui的字体所造成的问题, 决定去weui的官方repo下issue中寻求帮助, 结果发现在相关的IE兼容性问题中, weui的维护者表明目前暂时不考虑对IE的兼容。维护人<a href="https://github.com/Tencent/weui/issues/568" target="_blank" rel="external">原话</a>如下：</p>
+<blockquote>
+<p>weui主要是针对移动端页面而开发的，IE可能暂时不做考虑</p>
+</blockquote>
+<p>那么只好自己想办法解决啦。<br><a id="more"></a><br>首先利用谷歌和overstackflow, 我们可以知道导致<code>CSS3114</code>出现的原因是字体的权限不足, 在IE中被拦截了, 在stackoverflow的相关<a href="https://stackoverflow.com/questions/5587956/make-adobe-fonts-work-with-css3-font-face-in-ie9" target="_blank" rel="external">问题</a>下有很多看起来不错的答案, 但是和我们遇到的问题都有点差别, 最明显的就是问题下答案都是替换字体文件, 或者增加一份字体文件备份, 多引入一份字体用于IE。 而在weui中, 其字体的引入是直接通过内联的base64字符串而不是外部字体文件引用。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">font-face</span> &#123;</div><div class="line">    <span class="attribute">font-weight</span>: normal;</div><div class="line">    <span class="attribute">font-style</span>: normal;</div><div class="line">    <span class="attribute">font-family</span>: <span class="string">"weui"</span>;</div><div class="line">    <span class="comment">/* base64较长, 中间省略 */</span></div><div class="line">    <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">'data:application/octet-stream;base64,AAEAAA...AA'</span>) <span class="built_in">format</span>(<span class="string">'truetype'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>虽然有点不一致, 但是理一理思路, 解决方案也很简单, 大致是以下四步。</p>
+<ul>
+<li>(1)提取weui中指代字体的base64源字符串<br>将上文中的<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">src: url('data:application/octet-stream;base64,AAEAAA...AA') format('truetype');</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>去除前面的<code>src: url(&#39;data:application/octet-stream;base64,</code>, 以及后面的<code>&#39;) format(&#39;truetype&#39;);</code>。<br>然后得到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AAEAAA...AA</div></pre></td></tr></table></figure></p>
+<p>这就是我们所需要的base64源字符串了</p>
+<ul>
+<li><p>(2)将(1)中的base64字符串转换为字体文件<br>接着, 我们通过<a href="http://www.motobit.com/util/base64-decoder-encoder.asp" target="_blank" rel="external">字体转换网站</a>, 将我们前面一步得到的base64, 转换为字体文件。将我们的base64字符串复制到这个网站的主输入框中, 然后依次勾选<code>decode the data from a Base64 string (base64 decoding)</code> 和 <code>export to a binary file, filename: base64.bin</code>后, 点击<code>Convert to source data</code>按钮, 便可以得到一个名为<code>base64.bin</code>的转换后的字体文件了。</p>
+</li>
+<li><p>(3)通过工具修改字体文件的permission<br>接着, 我们通过<a href="https://www.andrebacklund.com/fontfixer.html" target="_blank" rel="external">Make TTF font embeded</a>这个网站, 修改我们字体文件的permission, 这里的字体文件是我们上一步操作中得到的<code>base64.bin</code>。</p>
+</li>
+<li><p>(4)将修改permisision后的字体文件再转换为base64字符串,并替换源weui中的base64字符串<br>最后, 我们再次通过<a href="http://www.motobit.com/util/base64-decoder-encoder.asp" target="_blank" rel="external">字体转换网站</a>, 将上一步中得到的字体文件转换回base64字符串。 先选择我们修改permission后的字体文件, 然后依次勾选<code>encode the source data to a Base64 string (base64 encoding)</code>和<code>output to a textbox (as a string)</code>, 接着点击<code>Convert to source data</code>按钮后, 其第二个主输入框中展现出来的内容, 就是我们所需要的转换后的base64字符串了, 我们将其复制, 直接替换我们weui文件中原本的base64就好了。需要说明的是, 因为我们主要使用场景依旧是移动端, 需要考虑资源大小的影响, base64字符串(8kb)较大, 所以这里使用了替换, 而不是俩行并行, 增添一行备份。且后续修改后进行了一系列测试, 并没有问题, 俩行并行的意义不大。</p>
+</li>
+</ul>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://github.com/Tencent/weui/issues/568" target="_blank" rel="external">weui主要是针对移动端页面而开发的，IE可能暂时不做考虑</a><br><a href="https://stackoverflow.com/questions/5587956/make-adobe-fonts-work-with-css3-font-face-in-ie9" target="_blank" rel="external">Make Adobe fonts work with CSS3 @font-face in IE9</a></p>
+
       
 
       
