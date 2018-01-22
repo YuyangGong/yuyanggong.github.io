@@ -9,14 +9,14 @@
   <title>如何优雅的给字体降级 | 勉强|技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="最近写一个内嵌于微信中的页面, 用到了weui样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误1CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable. 考虑到是weui的字体所造成的问题, 决定去weui的官方rep">
-<meta name="keywords" content="font,font-face,bug">
+<meta name="keywords" content="font,font-face,bug,css">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何优雅的给字体降级">
 <meta property="og:url" content="https://yuyanggong.github.io/2018/01/19/如何优雅的给字体降级/index.html">
 <meta property="og:site_name" content="勉强|技术博客">
 <meta property="og:description" content="最近写一个内嵌于微信中的页面, 用到了weui样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误1CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable. 考虑到是weui的字体所造成的问题, 决定去weui的官方rep">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-22T15:43:45.329Z">
+<meta property="og:updated_time" content="2018-01-22T16:07:27.486Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何优雅的给字体降级">
 <meta name="twitter:description" content="最近写一个内嵌于微信中的页面, 用到了weui样式库。因特殊需求, 需要在PC端上做预览, 大多数浏览器是正常的, 但是在IE下却会报如下错误1CSS3114: @font-face failed OpenType embedding permission check. Permission must be Installable. 考虑到是weui的字体所造成的问题, 决定去weui的官方rep">
@@ -192,6 +192,7 @@ ga('send', 'pageview');
 <li><p>(4)将修改permisision后的字体文件再转换为base64字符串,并替换源weui中的base64字符串<br>最后, 我们再次通过<a href="http://www.motobit.com/util/base64-decoder-encoder.asp" target="_blank" rel="external">字体转换网站</a>, 将上一步中得到的字体文件转换回base64字符串。 先选择我们修改permission后的字体文件, 然后依次勾选<code>encode the source data to a Base64 string (base64 encoding)</code>和<code>output to a textbox (as a string)</code>, 接着点击<code>Convert to source data</code>按钮后, 其第二个主输入框中展现出来的内容, 就是我们所需要的转换后的base64字符串了, 我们将其复制, 直接替换我们weui文件中原本的base64就好了。需要说明的是, 因为我们主要使用场景依旧是移动端, 需要考虑资源大小的影响, base64字符串(8kb)较大, 所以这里使用了替换, 而不是俩行并行, 增添一行备份。且后续修改后进行了一系列测试, 并没有问题, 俩行并行的意义不大。</p>
 </li>
 </ul>
+<h4 id="weui相关后续需要注意的事项"><a href="#weui相关后续需要注意的事项" class="headerlink" title="weui相关后续需要注意的事项"></a>weui相关后续需要注意的事项</h4><p>因为我们所需改动的是公共库weui, 其一般会被部署在CDN上, 此时如果要对其进行修改, 为避免用户获取缓存的weui文件, 应修改其CDN的文件名, 考虑到后续可能还有修改, 所以这里CDN名应该加上由其内容生成的hash值, 在weui库中, 其原本构建用到了<code>gulp</code>, 我们先通过npm引入<code>gulp-rev</code>(其作用是根据文件内容生成hash值并加入到文件名中), 然后修改其根目录下的<code>gulpfile.js</code>构建文件, 在开头<code>var rev = require(&#39;gulp-rev&#39;)</code>, 且在名为<code>build:style</code>的<code>task</code>下, 在<code>pipe</code>流中增添一行<code>pipe(rev())</code>, 最后执行<code>npm run test</code>后, 得到的<code>dist/weui-[hash].min.js</code>就是我们所需要的weui最终文件了。<br>如果我们项目中引入的weui来自第三方, 我们无法修改的情况怎么办呢？那样的话, 就只能直接在我们的样式文件中, 直接重新<code>@font-face</code>进行覆盖了。</p>
 <h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://github.com/Tencent/weui/issues/568" target="_blank" rel="external">weui主要是针对移动端页面而开发的，IE可能暂时不做考虑</a><br><a href="https://stackoverflow.com/questions/5587956/make-adobe-fonts-work-with-css3-font-face-in-ie9" target="_blank" rel="external">Make Adobe fonts work with CSS3 @font-face in IE9</a></p>
 
       
@@ -203,7 +204,7 @@ ga('send', 'pageview');
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bug/">bug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font/">font</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font-face/">font-face</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bug/">bug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font/">font</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font-face/">font-face</a></li></ul>
 	</div>
 
       
@@ -434,6 +435,10 @@ ga('send', 'pageview');
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">bug</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">css</a>
               </li>
             
             <div class="clearfix"></div>
