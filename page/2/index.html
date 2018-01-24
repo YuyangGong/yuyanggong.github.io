@@ -153,6 +153,68 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-【JavaScript】this全解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/30/【JavaScript】this全解析/">【JavaScript】this全解析</a>
+    </h1>
+  
+
+        <a href="/2017/09/30/【JavaScript】this全解析/" class="archive-article-date">
+  	<time datetime="2017-09-29T16:09:40.676Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在JavaScript中，this的指向一直是一个很令人头疼的问题，但是如果找到了诀窍，要搞清<code>this</code>, 其实并不会很难。</p>
+<p>与变量求值时候的词法作用域不同， this求值时候，是采用的动态作用域，总结起来很简单，即<strong>this指向其调用者</strong>。</p>
+<p>具体地，<code>this</code>的调用可以分为下面五种情况，我们将从这五种情况来讨论</p>
+<ul>
+<li>普通函数</li>
+<li>方法函数</li>
+<li>构造函数/class函数及其super</li>
+<li>通过bind、call、apply绑定this的函数</li>
+<li>箭头函数
+        <a class="article-more-a"  href="/2017/09/30/【JavaScript】this全解析/#more">more >></a>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/09/30/【JavaScript】this全解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-如何书写Vue组件的单元测试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -420,67 +482,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-underscore源码解析之函数方法与对象方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/23/underscore源码解析之函数方法与对象方法/">Underscore源码分析之函数与对象方法</a>
-    </h1>
-  
-
-        <a href="/2017/03/23/underscore源码解析之函数方法与对象方法/" class="archive-article-date">
-  	<time datetime="2017-03-23T15:28:08.180Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-23</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>库名: underscore</li>
-<li>源码地址: <a href="https://github.com/jashkenas/underscore">https://github.com/jashkenas/underscore</a></li>
-<li>源码版本: 1.8.3</li>
-<li>分析内容: 函数方法与对象方法实现</li>
-</ul>
-<hr>
-<h3 id="函数方法"><a href="#函数方法" class="headerlink" title="函数方法"></a>函数方法</h3><h4 id="executeBound"><a href="#executeBound" class="headerlink" title="executeBound"></a>executeBound</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> executeBound = <span class="function"><span class="keyword">function</span>(<span class="params">sourceFunc, boundFunc, context, callingContext, args</span>) </span>&#123;</div><div class="line">  <span class="comment">// 这一步判断是不是用 new 实例化构造函数</span></div><div class="line">  <span class="comment">// 如果不是, 直接用apply绑定this执行后返回</span></div><div class="line">  <span class="keyword">if</span> (!(callingContext <span class="keyword">instanceof</span> boundFunc)) <span class="keyword">return</span> sourceFunc.apply(context, args);</div><div class="line">  <span class="comment">// 如果是new实例化构造函数的话, 则模拟new函数内部实现</span></div><div class="line">  <span class="keyword">var</span> self = baseCreate(sourceFunc.prototype);</div><div class="line">  <span class="keyword">var</span> result = sourceFunc.apply(self, args);</div><div class="line">  <span class="keyword">if</span> (_.isObject(result)) <span class="keyword">return</span> result;</div><div class="line">  <span class="keyword">return</span> self;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-        <a class="article-more-a"  href="/2017/03/23/underscore源码解析之函数方法与对象方法/#more">more >></a>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Underscore/">Underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/23/underscore源码解析之函数方法与对象方法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -620,6 +621,18 @@ ga('send', 'pageview');
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">String</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Encode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Unicode</a>
               </li>
             
             <div class="clearfix"></div>
