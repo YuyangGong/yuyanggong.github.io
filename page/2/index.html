@@ -153,6 +153,62 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-node爬虫初体验" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/15/node爬虫初体验/">node爬虫初体验——根据植物种名爬取其详细信息</a>
+    </h1>
+  
+
+        <a href="/2017/10/15/node爬虫初体验/" class="archive-article-date">
+  	<time datetime="2017-10-15T02:16:20.684Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-15</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>实践周的时候，老师布置实习作业，要求查清全校的树种类型，并要完善的写下其界门纲目科属种的信息。在实地调查的过程中，各类树种的种名我们都已获取，剩下的就是上网搜索其详细信息并记录下来了，这一步很繁琐，我觉得完全可以通过写脚本来自动化处理，而其中关键在于爬虫爬取植物的详细信息。</p>
+<p>然后，开干吧~</p>
+<h3 id="爬取网站的选取"><a href="#爬取网站的选取" class="headerlink" title="爬取网站的选取"></a>爬取网站的选取</h3><p>本来一开始想选取百度百科爬取内容的，但是百度百科的植物URL比较特殊。<br>比如栀子花的百度百科URL为<code>http://baike.baidu.com/item/栀子花/77102</code>(其中’栀子花’为非法URI字符,需要encodeURI一下才合法,这里为表示清晰就直接这样显示了)。其后跟着一个<code>77102</code>数字ID, 为的是区分同名词条，然而，在写爬虫的时候，这个数字ID我们无法获取，所以不能正确获取URL,故放弃百度百科。那我们爬取哪个百科网站呢？视线转向互动百度，其栀子花的百科URL为<code>http://www.baike.com/wiki/栀子花</code>, 观察发现其URL的格式为<code>http://www.baike.com/wiki/${植物名称}</code>, 可以用作爬取网站(当然后面发现有这个其实也有同名词条的坑，不过可以判断解决)。<br>
+        <a class="article-more-a"  href="/2017/10/15/node爬虫初体验/#more">more >></a>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/10/15/node爬虫初体验/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-【JavaScript】this全解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -421,67 +477,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-underscore源码解析之公共方法与模板引擎" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/25/underscore源码解析之公共方法与模板引擎/">Underscore源码分析之公共方法与模板引擎的实现</a>
-    </h1>
-  
-
-        <a href="/2017/03/25/underscore源码解析之公共方法与模板引擎/" class="archive-article-date">
-  	<time datetime="2017-03-25T02:12:35.758Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-25</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>库名: underscore</li>
-<li>源码地址: <a href="https://github.com/jashkenas/underscore">https://github.com/jashkenas/underscore</a></li>
-<li>源码版本: 1.8.3</li>
-<li>分析内容: 公共方法与模板引擎的实现</li>
-</ul>
-<hr>
-<h4 id="identity"><a href="#identity" class="headerlink" title="_.identity"></a>_.identity</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 直接返回传入的参数, 作为underscore的默认迭代器</span></div><div class="line">_.identity = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> value;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-        <a class="article-more-a"  href="/2017/03/25/underscore源码解析之公共方法与模板引擎/#more">more >></a>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Underscore/">Underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/25/underscore源码解析之公共方法与模板引擎/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -633,6 +628,14 @@ ga('send', 'pageview');
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">Unicode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">Css</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">flex</a>
               </li>
             
             <div class="clearfix"></div>

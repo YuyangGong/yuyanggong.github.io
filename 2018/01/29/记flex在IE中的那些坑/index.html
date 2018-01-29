@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://yuyanggong.github.io">
-  <title>记升级vue-loader版本时遇到的一个坑 | 勉强|技术博客</title>
+  <title>记flex在IE中的那些坑 | 勉强|技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近对公司的一个Vue项目进行了依赖升级, 主要是将webpack1升级到了webpack3, 同时也将原本项目的Vue、Vue-router、Vuex、Vue-loader等一系列依赖进行了升级, 升级过程中的相关配置参考了Vue-cli中webpack的template, 主要是在其上做了一些适应我们项目的调整, 整体过程还是很轻松愉快的, 但是在整个过程中也遇到了一些小坑, 主要集中在单元测">
-<meta name="keywords" content="Vue,Vue-loader,test">
+  <meta name="description" content="因只需要兼容现代浏览器, 便在项目中的布局中采用了一般在移动端才会使用的flex布局, 可在IE中仍然遇到了问题。 于是便在这里做个记录, 以及给出相应的解决方法。  IE 11 requires a unit to be added to the third argument, the flex-basis property  In IE10 and IE11, containers with">
+<meta name="keywords" content="Css,flex">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记升级vue-loader版本时遇到的一个坑">
-<meta property="og:url" content="https://yuyanggong.github.io/2018/01/16/记升级vue-loader版本时遇到的一个坑/index.html">
+<meta property="og:title" content="记flex在IE中的那些坑">
+<meta property="og:url" content="https://yuyanggong.github.io/2018/01/29/记flex在IE中的那些坑/index.html">
 <meta property="og:site_name" content="勉强|技术博客">
-<meta property="og:description" content="最近对公司的一个Vue项目进行了依赖升级, 主要是将webpack1升级到了webpack3, 同时也将原本项目的Vue、Vue-router、Vuex、Vue-loader等一系列依赖进行了升级, 升级过程中的相关配置参考了Vue-cli中webpack的template, 主要是在其上做了一些适应我们项目的调整, 整体过程还是很轻松愉快的, 但是在整个过程中也遇到了一些小坑, 主要集中在单元测">
+<meta property="og:description" content="因只需要兼容现代浏览器, 便在项目中的布局中采用了一般在移动端才会使用的flex布局, 可在IE中仍然遇到了问题。 于是便在这里做个记录, 以及给出相应的解决方法。  IE 11 requires a unit to be added to the third argument, the flex-basis property  In IE10 and IE11, containers with">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-16T15:50:01.160Z">
+<meta property="og:updated_time" content="2018-01-29T15:34:28.585Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记升级vue-loader版本时遇到的一个坑">
-<meta name="twitter:description" content="最近对公司的一个Vue项目进行了依赖升级, 主要是将webpack1升级到了webpack3, 同时也将原本项目的Vue、Vue-router、Vuex、Vue-loader等一系列依赖进行了升级, 升级过程中的相关配置参考了Vue-cli中webpack的template, 主要是在其上做了一些适应我们项目的调整, 整体过程还是很轻松愉快的, 但是在整个过程中也遇到了一些小坑, 主要集中在单元测">
+<meta name="twitter:title" content="记flex在IE中的那些坑">
+<meta name="twitter:description" content="因只需要兼容现代浏览器, 便在项目中的布局中采用了一般在移动端才会使用的flex布局, 可在IE中仍然遇到了问题。 于是便在这里做个记录, 以及给出相应的解决方法。  IE 11 requires a unit to be added to the third argument, the flex-basis property  In IE10 and IE11, containers with">
   
     <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
   
@@ -153,49 +153,35 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-记升级vue-loader版本时遇到的一个坑" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-记flex在IE中的那些坑" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      记升级vue-loader版本时遇到的一个坑
+      记flex在IE中的那些坑
     </h1>
   
 
-        <a href="/2018/01/16/记升级vue-loader版本时遇到的一个坑/" class="archive-article-date">
-  	<time datetime="2018-01-16T14:05:52.851Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-16</time>
+        <a href="/2018/01/29/记flex在IE中的那些坑/" class="archive-article-date">
+  	<time datetime="2018-01-29T14:31:10.384Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-29</time>
 </a>
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近对公司的一个Vue项目进行了依赖升级, 主要是将<code>webpack1</code>升级到了<code>webpack3</code>, 同时也将原本项目的Vue、Vue-router、Vuex、Vue-loader等一系列依赖进行了升级, 升级过程中的相关配置参考了<code>Vue-cli</code>中<code>webpack</code>的<code>template</code>, 主要是在其上做了一些适应我们项目的调整, 整体过程还是很轻松愉快的, 但是在整个过程中也遇到了一些小坑, 主要集中在单元测试这一块, 比如webpack2开始不支持loader的省略写法呀、覆盖率用babel配合istanbul而不需要像webpack1里过多的手动配置呀, 网上的相关webpack升级指南教程之类的文章博客很多, 这里就不具体涉及了, 只是记录与vue-loader版本升级有关的一个隐蔽的坑。<br><a id="more"></a></p>
-<p>当项目整体升级完毕后, 业务代码跑起来正常, 然后再跑单元测试, 结果报了许多原本没有出现的断言错误, 深入其中发现其每次断言错误都会伴随着一句Vue警告<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Failed to mount component: template or render function not defined.</div></pre></td></tr></table></figure></p>
-<p>初步猜测可能是我们测试中没有正确require到我们被测试的相关组件, 在测试中我们一般是通过类似以下形式去拿到我们被测试的组件并进行依赖注入的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> inject = <span class="built_in">require</span>(<span class="string">'!!vue-loader?inject!src/componentA.vue'</span>)</div><div class="line"><span class="keyword">const</span> comp = inject(&#123;</div><div class="line">  ...</div><div class="line">  类似如下的各种依赖注入</div><div class="line">  ...</div><div class="line">  <span class="string">'src/api/xxx'</span>: &#123;</div><div class="line">    ...</div><div class="line">    模拟依赖</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>此时在出错的测试块中, 通过<code>console</code>打印我们依赖注入的组件<code>comp</code>, 打印的结果正如Vue警告所示, 并没有<code>template</code>或<code>render</code>方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> inject = <span class="built_in">require</span>(<span class="string">'!!vue-loader?inject!src/componentA.vue'</span>)</div><div class="line"><span class="keyword">const</span> comp = inject(&#123; ... &#125;)</div><div class="line"><span class="comment">// 除了没有template和render以外, 一切正常.</span></div><div class="line"><span class="built_in">console</span>.log(comp)</div><div class="line"><span class="comment">// undefined, undefined</span></div><div class="line"><span class="built_in">console</span>.log(comp.template, comp.render)</div></pre></td></tr></table></figure></p>
-<p>为什么<code>require</code>进来的组件没有template或者render呢, 正常来说是应该具备的, Vue单文件组件中<code>&lt;template&gt;&lt;/template&gt;</code>里的模板, 在经过vue-loader加载后理应会被正确导入为render函数, 这里却出现了遗漏。<br>初步判断问题与<code>vue-loader</code>有关, 进入github上<code>vue-loader</code>的repo, 在其issue页面, 查找我们的遇到的vue警告内容, 发现类似的问题<a href="https://github.com/vuejs/vue-loader/issues/996" target="_blank" rel="external">issue996</a>。</p>
-<p>噢, 原来是vue-loader@13.0.0版本中的Breaking Changes引起的。<br>如vue-loader@13.0.0的<a href="https://github.com/vuejs/vue-loader/releases/tag/v13.0.0" target="_blank" rel="external">release</a>所描述</p>
-<blockquote>
-<p>The esModule option is now true by default, because this is necessary for ES-module-based scope hoisting to work. This means the export from a *.vue file is now an ES module by default, so async components via dynamic import like this will break:</p>
-<p><code>const Foo = () =&gt; import(&#39;./Foo.vue&#39;)</code><br>Note: the above can continue to work with Vue 2.4 + vue-router 2.7, which will automatically resolve ES modules’ default exports when dealing with async components. In earlier versions of Vue and vue-router you will have to do this:</p>
-<p><code>const Foo = () =&gt; import(&#39;./Foo.vue&#39;).then(m =&gt; m.default)</code><br>Alternatively, you can turn off the new behavior by explicitly using esModule: false in vue-loader options.</p>
-<p>Similarly, old CommonJS-style requires will also need to be updated:</p>
-<p>// before<br><code>const Foo = require(&#39;./Foo.vue&#39;)</code></p>
-<p>// after<br><code>const Foo = require(&#39;./Foo.vue&#39;).default</code></p>
-</blockquote>
-<p>原来, 在vue-loader@13.0.0中, 为了支持<code>webpack3</code>中的基于esModule的<code>Scope Hoisting</code>(知乎上有篇<a href="https://zhuanlan.zhihu.com/p/27980441" target="_blank" rel="external">相关文章</a>写的很详细), <code>esModule</code>选项被默认设置为<code>true</code>。</p>
-<p>知道了问题产生的原因, 那解决办法也就相应出来了。大致是俩种。</p>
+        <p>因只需要兼容现代浏览器, 便在项目中的布局中采用了一般在移动端才会使用的flex布局, 可在IE中仍然遇到了问题。 于是便在这里做个记录, 以及给出相应的解决方法。</p>
 <ul>
-<li><p>第一种 更改我们测试里的<code>require</code>语法, 将<code>const inject = require(&#39;!!vue-loader?inject!src/componentA.vue&#39;)</code>修改为<code>const inject = require(&#39;!!vue-loader?inject!src/componentA.vue&#39;).default</code></p>
+<li><p>IE 11 requires a unit to be added to the third argument, the flex-basis property</p>
 </li>
-<li><p>第二种 修改测试的config, 在测试环境时, 将vue-loader的<code>esModule</code>选项设置为<code>false</code></p>
+<li><p>In IE10 and IE11, containers with display: flex and flex-direction: column will not properly calculate their flexed childrens’ sizes if the container has min-height but no explicit height property.</p>
+</li>
+<li><p>IE 11 does not vertically align items correctly when min-height is used</p>
+</li>
+<li><p>In IE10 the default value for flex is 0 0 auto rather than 0 1 auto as defined in the latest spec.</p>
 </li>
 </ul>
-<p>因为我们的测试文件比较多, 采用第一种方法, 就算用编辑器(如sublime)的全局replace, 也要手动去一个一个保存, 较为繁琐, 而手动写一个node脚本处理也有一定的时间成本。所以这里我选择采用第二种解决方法, 直接修改测试环境的配置, 很简单, 只需要在我们的<code>webpack.test.conf.js中</code>加上一段代码处理就OK：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// solve vue-loader@13.0.0 breaking change https://github.com/vuejs/vue-loader/releases/tag/v13.0.0</span></div><div class="line">webpackConfig.module.rules.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (v.loader === <span class="string">'vue-loader'</span>) &#123;</div><div class="line">    v.options.esModule = <span class="literal">false</span></div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>好的, 问题解决了~</p>
-<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><p><a href="https://github.com/vuejs/vue-loader/releases/tag/v13.0.0" target="_blank" rel="external">vue-loader@13.0.0 release</a><br><a href="https://zhuanlan.zhihu.com/p/27980441" target="_blank" rel="external">webpack3 Scope Hoisting</a></p>
 
       
 
@@ -206,7 +192,7 @@ ga('send', 'pageview');
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue-loader/">Vue-loader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/">test</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Css/">Css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flex/">flex</a></li></ul>
 	</div>
 
       
@@ -259,7 +245,7 @@ ga('send', 'pageview');
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2018/01/16/记升级vue-loader版本时遇到的一个坑/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2018/01/29/记flex在IE中的那些坑/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -273,18 +259,9 @@ ga('send', 'pageview');
   
 <nav id="article-nav">
   
-    <a href="/2018/01/19/如何优雅的给字体降级/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          如何优雅的给字体降级
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/12/29/关于时区的一些总结/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">关于时区的总结</div>
+    <a href="/2018/01/24/字体编码拾遗/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">字符编码拾遗</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -297,7 +274,7 @@ ga('send', 'pageview');
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="记升级vue-loader版本时遇到的一个坑" data-title="记升级vue-loader版本时遇到的一个坑" data-url="https://yuyanggong.github.io/2018/01/16/记升级vue-loader版本时遇到的一个坑/"></div>
+	<div class="ds-thread" data-thread-key="记flex在IE中的那些坑" data-title="记flex在IE中的那些坑" data-url="https://yuyanggong.github.io/2018/01/29/记flex在IE中的那些坑/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
