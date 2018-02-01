@@ -153,6 +153,64 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-关于时区的一些总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/29/关于时区的一些总结/">关于时区的总结</a>
+    </h1>
+  
+
+        <a href="/2017/12/29/关于时区的一些总结/" class="archive-article-date">
+  	<time datetime="2017-12-29T08:06:00.998Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-29</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近写一个手机营销页面, 因为本身交互并不是很复杂, 故采用原生JS书写, 不使用任何框架。项目本身有对时间进行处理的需求, 但出于性能以及移动端上流量的考虑, 没有引入moment之类的时间库(moment.min.js gzip后也有12.4KB, 本身整个小项目才不超过30KB), 用原生的Date来解决时间、时区上的转换, 但是在这个过程中, 遇到了一些坑, 这里便把时区以及其相关的知识, 和我在这个项目中踩过的坑总结一下~</p>
+<p>时区是什么呢? 根据百科上的解释, 在1884年的时候, 人们为了克服时间上的混乱, 在华盛顿召开了一次国际经度会议，会中规定将全球划分为24个时区（东、西各12个时区）。并规定英国（格林尼治天文台旧址）为中时区（零时区）、东1-12区，西1-12区。每个时区横跨经度15度，时间正好是1小时。最后的东、西第12区各跨经度7.5度，以东、西经180度为界。每个时区的中央经线上的时间就是这个时区内统一采用的时间，称为区时，相邻两个时区的时间相差1小时。我们国家地域辽阔, 横跨5个地理时区。但统一根据北京时间划分, 列为东八区。</p>
+<p>以上是关于时区的基本概念, 我们知道, 在JavaScript中, 当我们实例化<code>Date</code>构造函数并调用其<code>toString</code>方法, 会返回当前的本地时间字符串<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Mon Jan 15 2018 20:32:15 GMT+0800 (中国标准时间)</span></div><div class="line">(<span class="keyword">new</span> <span class="built_in">Date</span>()).toString()</div></pre></td></tr></table></figure></p>
+<p>这其中<code>GMT+0800</code>, 便代表的是相对于GMT(零时区, 后文有更详细的解释)时间的偏移量, <code>+0800</code>表示本地时间比GMT时间快八小时, 则本地时间<code>Mon Jan 15 2018 20:32:15 GMT+0800</code>对应的GMT时间为<code>Mon Jan 15 2018 12:32:15 GMT+0000</code>, 当然, <code>GMT</code>后面的<code>+0000</code>一般会省略。</p>
+<p>在<code>JavaScript</code>的<code>Date</code>对象实例上, 我们还可以看到与之相关的除了<code>toGMTString</code>, 还有<code>toUTCString</code>之类的方法。那其中的<code>GMT</code>与<code>UTC</code>具体是什么意思, 又有什么区别呢？<br>
+        <a class="article-more-a"  href="/2017/12/29/关于时区的一些总结/#more">more >></a>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Date/">Date</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/timezone/">timezone</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/29/关于时区的一些总结/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-node爬虫初体验" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -399,67 +457,6 @@ ga('send', 'pageview');
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/09/12/贝格尔编排法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-多git账号配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/07/多git账号配置/">git多账号配置</a>
-    </h1>
-  
-
-        <a href="/2017/09/07/多git账号配置/" class="archive-article-date">
-  	<time datetime="2017-09-06T19:22:18.757Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-07</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近需要在本地电脑上配置多个git账号，通过ssh与多个远程仓库一一对应连接，稍微研究了下，便把一点心得写了下来。<br>其步骤分为以下六点。</p>
-<ol>
-<li>安装相关软件</li>
-<li>创建公私密钥</li>
-<li>上传密钥</li>
-<li>配置config文件</li>
-<li>验证与服务器是否联通</li>
-<li>配置本地邮箱与用户名
-        <a class="article-more-a"  href="/2017/09/07/多git账号配置/#more">more >></a>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssh/">ssh</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/07/多git账号配置/">展开全文 >></a>
         </p>
       
 
