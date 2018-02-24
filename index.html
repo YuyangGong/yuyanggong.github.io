@@ -153,25 +153,32 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-JavaScript中对象的复制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-karma单元测试中用ChromeHeadless取代PhantomJS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/01/JavaScript中对象的复制/">JavaScript中的深拷贝</a>
+      <a class="article-title" href="/2018/02/01/karma单元测试中用ChromeHeadless取代PhantomJS/">karma单元测试中用ChromeHeadless取代PhantomJS</a>
     </h1>
   
 
-        <a href="/2018/02/01/JavaScript中对象的复制/" class="archive-article-date">
+        <a href="/2018/02/01/karma单元测试中用ChromeHeadless取代PhantomJS/" class="archive-article-date">
   	<time datetime="2018-02-01T15:56:59.647Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-01</time>
 </a>
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>在项目中, 进行自动化测试的时候, 一般使用的无头浏览器是PhantomJS, 但是其速度较慢, 而且有着一些稀奇古怪的小坑, 有部分可以通过小hack绕过或模拟出效果, 还有部分就比较麻烦,比如近期我遇到的一个小bug, 进行了事件委托的元素, 无论是调用类似<code>HTMLElement.click</code>的原生方法, 还是通过<code>document.createEvent</code>创建自定义事件然后通过<code>dispatchEvent</code>触发, 在PhantomJs中都无法正确触发事件, 得不到我们想要的效果, 这种情况下, 可能我们在写测试代码就需要通过stub去模拟拿到我们的事件监听的回调, 然后手动执行回调进行测试了, 很不优雅且测试的逻辑也不完整。想起前几个月Chrome已经发布了Headless版本, 那么我们为什么不用ChromeHeadless来取代PhantomJs进行测试呢?<br>完全是可以的, 其过程也很简单, 分为以下4个步骤</p>
+<ol>
+<li>修改package.json中的依赖</li>
+<li>修改karma的配置文件</li>
+<li>去除测试suit中为PhantomJs所写的hack code</li>
+<li>修改持续集成配置文件(在gitlab中是gitlab-ci.yml)</li>
+</ol>
+        <a class="article-more-a"  href="/2018/02/01/karma单元测试中用ChromeHeadless取代PhantomJS/#more">more >></a>
       
 
       
@@ -181,14 +188,14 @@ ga('send', 'pageview');
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI/">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/karma/">karma</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unit-test/">unit test</a></li></ul>
 	</div>
 
       
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/01/JavaScript中对象的复制/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/02/01/karma单元测试中用ChromeHeadless取代PhantomJS/">展开全文 >></a>
         </p>
       
 
@@ -592,6 +599,18 @@ ga('send', 'pageview');
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">flex</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">unit test</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">CI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">karma</a>
               </li>
             
             <div class="clearfix"></div>
