@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://yuyanggong.github.io">
-  <title>Archives: 2018/1 | 勉强|技术博客</title>
+  <title>从判断网址的主域名聊起 | 勉强|技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Web前端开发实习中，乐于学习各种新技术~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="勉强|技术博客">
-<meta property="og:url" content="https://yuyanggong.github.io/archives/2018/01/index.html">
+  <meta name="description" content="在群里, 有同学提问, 如何判断输入是否是以qq.com为主域名的合法网址,能不能通过只写一个正则来test?我想了想, 写下了如下的正则:1/^(?:https?:\/\/)?(?:[-0-9a-z]+\.)*qq\.com(?::(?:[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|">
+<meta name="keywords" content="JavaScript,RegExp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从判断网址的主域名聊起">
+<meta property="og:url" content="https://yuyanggong.github.io/2018/04/13/从判断网址的主域名聊起/index.html">
 <meta property="og:site_name" content="勉强|技术博客">
-<meta property="og:description" content="Web前端开发实习中，乐于学习各种新技术~">
+<meta property="og:description" content="在群里, 有同学提问, 如何判断输入是否是以qq.com为主域名的合法网址,能不能通过只写一个正则来test?我想了想, 写下了如下的正则:1/^(?:https?:\/\/)?(?:[-0-9a-z]+\.)*qq\.com(?::(?:[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-13T14:45:39.167Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="勉强|技术博客">
-<meta name="twitter:description" content="Web前端开发实习中，乐于学习各种新技术~">
+<meta name="twitter:title" content="从判断网址的主域名聊起">
+<meta name="twitter:description" content="在群里, 有同学提问, 如何判断输入是否是以qq.com为主域名的合法网址,能不能通过只写一个正则来test?我想了想, 写下了如下的正则:1/^(?:https?:\/\/)?(?:[-0-9a-z]+\.)*qq\.com(?::(?:[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|">
   
     <link rel="alternative" href="/atom.xml" title="勉强|技术博客" type="application/atom+xml">
   
@@ -151,118 +153,174 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-从判断网址的主域名聊起" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      从判断网址的主域名聊起
+    </h1>
+  
+
+        <a href="/2018/04/13/从判断网址的主域名聊起/" class="archive-article-date">
+  	<time datetime="2018-04-13T14:31:17.232Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-13</time>
+</a>
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在群里, 有同学提问, 如何判断输入是否是以qq.com为主域名的合法网址,能不能通过只写一个正则来<code>test</code>?我想了想, 写下了如下的正则:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/^(?:https?:\/\/)?(?:[-0-9a-z]+\.)*qq\.com(?::(?:[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|6[0-4][0-9][0-9][0-9]|65[0-4][0-9][0-9]|655[0-2][0-9]|6553[0-5]))?(?:\/[^\/\s]+)*(?:\?(?:[^\s=&amp;]+=[^\s=&amp;]*)(?:&amp;(?:[^\s=&amp;]+=[^\s=&amp;]*))*)?(?:#[^\s]*)?$/i</div></pre></td></tr></table></figure></p>
+<p>乍一看, 好像超级复杂呀。<br>下面我来慢慢解析, 我们首先要判断这个网址是否合法,我们知道网址的结构大致为 <code>[协议]://[域名]:[端口号]/[路径][url查询参数]#[锚点名]</code>, 其中协议, 端口号, 锚点, url查询参数都是可选的。协议名和域名部分是不区分大小写的, 我们要匹配的恰恰是主域名, 所以将<code>i</code>flag添加到了正则上。<br><a id="more"></a></p>
+<p>然后再来逐个分析：</p>
+<ul>
+<li><p>协议<br>网址的协议名可以是<code>http</code>,也可以是<code>https</code>, 也可以没有显式协议名通过正则匹配则是<code>(https?:\/\/)?</code></p>
+</li>
+<li><p>域名<br>域名可能存在开头的<code>www</code>, 如<code>www.qq.com</code>, 或者其他子域名, 如<code>video.qq.com</code>,其都是合法的, 实际上, <code>www</code>也是子域名的一种, 所以我们判断的时候只需要都当做子域名判断即可, 子域名是可选的, 且子域名的层级数量不固定, 可能很长如<code>a.b.c.d.e.qq.com</code>, 子域名由大小写字母，数字，以及’-‘组成, 中间由<code>.</code>连接,子域名的判断可以写成如下正则<code>([0-9a-z\-]+\.)*</code>, 在字符集中如果<code>-</code>放在首位, 则不需要转义, 所以可以正则改成<code>([-0-9a-z]+\.)*</code>, 省了一个转义字符(笑),而主域名及顶级域名,就分别是我们需要判断的<code>qq</code>和<code>com</code>, 写成正则即为<code>qq\.com</code></p>
+</li>
+<li><p>端口号<br>端口号是可选的, 其范围为0到65535, 用正则来验证数字范围的话, 因正则的匹配是基于单个字符的, 如果是个位数<code>0</code>到<code>9</code>还行, 直接<code>/[0-9]/</code>即可,但是一旦上俩位数, 或者是有小数, 那还是蛮麻烦的, 以前七牛有个相关的<a href="https://www.zhihu.com/question/67923820/answer/258202516" target="_blank" rel="external">bug</a>也是被匹配端口号的正则给坑了。如果要用正则匹配范围从0到65535的字符串,则需要写成<code>[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|6[0-4][0-9][0-9][0-9]|65[0-4][0-9][0-9]|655[0-2][0-9]|6553[0-5]</code>。<br>其中各段代表如下含义:</p>
+<ul>
+<li><code>[1-9]</code> 匹配个位数<code>1</code>到<code>9</code>, 因为<code>0</code>端口号有默认含义, 所以这里不匹配</li>
+<li><code>[1-9][0-9]</code> 匹配<code>10</code>到<code>99</code></li>
+<li><code>[1-9][0-9][0-9]</code> 匹配<code>100</code>到<code>999</code></li>
+<li><code>[1-9][0-9][0-9][0-9]</code> 匹配<code>1000</code>到<code>9999</code></li>
+<li><code>[1-5][0-9][0-9][0-9][0-9]</code> 匹配<code>10000</code>到<code>59999</code></li>
+<li><code>6[0-4][0-9][0-9][0-9]</code> 匹配<code>60000</code>到<code>64999</code></li>
+<li><code>65[0-4][0-9][0-9]</code> 匹配<code>65000</code>到<code>65499</code></li>
+<li><code>655[0-2][0-9]</code> 匹配<code>65500</code>到<code>65529</code></li>
+<li><code>6553[0-5]</code> 匹配<code>65530</code>到<code>65535</code></li>
+</ul>
+</li>
+</ul>
+<p>当然, 我们还需要匹配前置的<code>:</code>符号, 所以这部分的正则应该为<br><code>(:([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|6[0-4][0-9][0-9][0-9]|65[0-4][0-9][0-9]|655[0-2][0-9]|6553[0-5]))?</code></p>
+<ul>
+<li><p>路径<br>在域名或端口号(如果有的话)后面接的是路径, 对路径的匹配有多种情况, 其可能是类似<code>文件夹/文件夹/文件名</code>的形式, 也可能是<code>route1/route2/route3</code>这种形式, 根据后台的设置而定, 后台可能是直接返回对应路径的静态文件, 也可能是对路由进行了一定处理, 且其路径层级数不固定,我们这里对路径进行宽松的检查, 其正则为<code>(\/[^\/\s]+)*</code></p>
+</li>
+<li><p>url查询参数(query)<br>url查询参数由<code>?</code>开头, 参数对的<code>key</code>和<code>value</code>以<code>=</code>相隔, 可以只存在<code>key</code>, 不存在<code>value</code>, 如<code>?test1=</code>, 这种情况<code>test1</code>参数的值为空字符串<code>&#39;&#39;</code>, 如果有多对参数对,每对参数对之间用<code>&amp;</code>连接,故其正则应该写成<code>(\?([^\s=&amp;]+=[^\s=&amp;]*)(&amp;([^\s=&amp;]+=[^\s=&amp;]*))*)?</code></p>
+</li>
+<li><p>锚点名<br>锚点名由<code>#</code>开头, 其后所接内容无限制, 写成正则即为<code>(#[^\s]*)?</code></p>
+</li>
+</ul>
+<p>然后再将将以上分析所得正则处理一下:</p>
+<ol>
+<li>连接起来</li>
+<li>加上首部匹配分界符<code>^</code>和尾部匹配分界符<code>$</code></li>
+<li>通过<code>?:</code>设置所有的分组为非捕获分组, 使得匹配过程中不需要分配<br>额外空间保存分组匹配到的内容, 可以起到一定程度的性能优化作用。</li>
+</ol>
+<p>便得到了我们最开始提到的正则:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/^(?:https?:\/\/)?(?:[-0-9a-z]+\.)*qq\.com(?::(?:[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-5][0-9][0-9][0-9][0-9]|6[0-4][0-9][0-9][0-9]|65[0-4][0-9][0-9]|655[0-2][0-9]|6553[0-5]))?(?:\/[^\/\s]+)*(?:\?(?:[^\s=&amp;]+=[^\s=&amp;]*)(?:&amp;(?:[^\s=&amp;]+=[^\s=&amp;]*))*)?(?:#[^\s]*)?$/i</div></pre></td></tr></table></figure></p>
+<p>(完)</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/24/字体编码拾遗/" class="archive-article-date">
-  	<time datetime="2018-01-24T12:49:30.611Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/24/字体编码拾遗/">字符编码拾遗</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Encode/">Encode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/String/">String</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unicode/">Unicode</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RegExp/">RegExp</a></li></ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://yuyanggong.github.io/2018/04/13/从判断网址的主域名聊起/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/19/如何优雅的给字体降级/" class="archive-article-date">
-  	<time datetime="2018-01-19T14:32:06.336Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/19/如何优雅的给字体降级/">如何优雅的给字体降级</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bug/">bug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font/">font</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font-face/">font-face</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/16/记升级vue-loader版本时遇到的一个坑/" class="archive-article-date">
-  	<time datetime="2018-01-16T14:05:52.851Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/16/记升级vue-loader版本时遇到的一个坑/">记升级vue-loader版本时遇到的一个坑</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue-loader/">Vue-loader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/">test</a></li></ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/02/01/karma单元测试中用ChromeHeadless取代PhantomJS/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">karma单元测试中用ChromeHeadless取代PhantomJS</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
+</nav>
 
-    
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="从判断网址的主域名聊起" data-title="从判断网址的主域名聊起" data-url="https://yuyanggong.github.io/2018/04/13/从判断网址的主域名聊起/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jseryuyang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 
           </div>
@@ -285,8 +343,8 @@ ga('send', 'pageview');
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
